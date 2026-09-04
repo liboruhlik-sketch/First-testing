@@ -1,0 +1,316 @@
+<title>Market Radar</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --ground:#f3f5f9; --surface:#ffffff; --surface-2:#eef1f6;
+  --ink:#17203a; --ink-2:#5b6478; --ink-3:#8a93a8;
+  --border:#e2e6ee; --border-strong:#c9cfdc;
+  --accent:#2456c4; --accent-ink:#ffffff; --accent-soft:#e7edfb;
+  --s-customer:#0f9166; --s-prospect:#2a78d6; --s-lost:#e34948; --s-market:#8a7fd6;
+  --pill-customer:#e2f3ec; --pill-prospect:#e5eefb; --pill-lost:#fbe7e7; --pill-market:#ece9f9;
+  --shadow:0 10px 30px rgba(23,32,58,.10);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#10131c; --surface:#171b26; --surface-2:#1f2432;
+    --ink:#eef1f8; --ink-2:#a3abc0; --ink-3:#727c96;
+    --border:#272d3d; --border-strong:#39415a;
+    --accent:#6f9bef; --accent-ink:#0e1524; --accent-soft:#1d2a45;
+    --s-customer:#199e70; --s-prospect:#3987e5; --s-lost:#e66767; --s-market:#8579d8;
+    --pill-customer:#15302a; --pill-prospect:#182a44; --pill-lost:#3a2126; --pill-market:#282442;
+    --shadow:0 10px 30px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#10131c; --surface:#171b26; --surface-2:#1f2432;
+  --ink:#eef1f8; --ink-2:#a3abc0; --ink-3:#727c96;
+  --border:#272d3d; --border-strong:#39415a;
+  --accent:#6f9bef; --accent-ink:#0e1524; --accent-soft:#1d2a45;
+  --s-customer:#199e70; --s-prospect:#3987e5; --s-lost:#e66767; --s-market:#8579d8;
+  --pill-customer:#15302a; --pill-prospect:#182a44; --pill-lost:#3a2126; --pill-market:#282442;
+  --shadow:0 10px 30px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+body{
+  background:var(--ground); color:var(--ink); margin:0;
+  font:15px/1.5 "Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px 64px}
+header.top{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding:26px 0 6px}
+.brand{font:700 24px/1.1 "Bricolage Grotesque","Instrument Sans",system-ui,sans-serif;letter-spacing:-.01em}
+.brand small{color:var(--accent)}
+.tagline{color:var(--ink-2);font-size:14px}
+.databadge{margin-left:auto;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-2);border:1px solid var(--border-strong);border-radius:999px;padding:4px 12px}
+.databadge.live{color:var(--s-customer);border-color:var(--s-customer)}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.kpi .lbl{font-size:11.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
+.kpi .val{font-size:30px;font-weight:600;margin-top:2px}
+.kpi .sub{font-size:12.5px;color:var(--ink-3)}
+.kpi .dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:7px;vertical-align:1px}
+
+.coverage{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:12px}
+.coverage h2{margin:0 0 10px;font:600 13px/1 "Instrument Sans",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
+.covbar{display:flex;gap:2px;height:26px;border-radius:6px;overflow:hidden}
+.covbar .seg{position:relative;min-width:2px;transition:flex-basis .3s}
+.covbar .seg:hover{filter:brightness(1.08)}
+.covlegend{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px;font-size:13px;color:var(--ink-2)}
+.covlegend b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.covlegend .dot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px}
+
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:26px 0 12px}
+.tabs{display:flex;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:3px;gap:2px}
+.tabs button{border:0;background:transparent;color:var(--ink-2);font:600 14px "Instrument Sans",sans-serif;
+  padding:7px 16px;border-radius:6px;cursor:pointer}
+.tabs button.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--border-strong);background:var(--surface);color:var(--ink-2);border-radius:999px;
+  font:500 13px "Instrument Sans",sans-serif;padding:6px 13px;cursor:pointer}
+.chip.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+select,input[type=search]{
+  background:var(--surface);color:var(--ink);border:1px solid var(--border-strong);border-radius:8px;
+  padding:7px 10px;font:14px "Instrument Sans",sans-serif}
+input[type=search]{min-width:200px;flex:1}
+button:focus-visible,select:focus-visible,input:focus-visible,tr:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.tablewrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow-x:auto;box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;min-width:860px}
+th{font:600 11.5px "Instrument Sans",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);
+  text-align:left;padding:12px 14px;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:var(--surface-2)}
+tbody tr:last-child td{border-bottom:0}
+.name{font-weight:600}
+.mut{color:var(--ink-2);font-size:13px}
+.mut2{color:var(--ink-3);font-size:12.5px}
+.pill{display:inline-block;font:600 12px "Instrument Sans",sans-serif;border-radius:999px;padding:3px 10px;white-space:nowrap}
+.pill.customer{background:var(--pill-customer);color:var(--s-customer)}
+.pill.prospect{background:var(--pill-prospect);color:var(--s-prospect)}
+.pill.lost{background:var(--pill-lost);color:var(--s-lost)}
+.pill.market{background:var(--pill-market);color:var(--s-market)}
+.score{display:flex;align-items:center;gap:8px;min-width:96px}
+.score b{font-variant-numeric:tabular-nums;font-weight:600;width:2.2ch;text-align:right}
+.track{flex:1;height:5px;border-radius:3px;background:var(--surface-2);min-width:44px}
+.fill{height:100%;border-radius:3px;background:var(--accent)}
+.appr b{font-weight:600}
+.srcs{display:flex;gap:4px;flex-wrap:wrap}
+.src{font:500 11px "Instrument Sans",sans-serif;color:var(--ink-2);background:var(--surface-2);
+  border-radius:5px;padding:2px 7px;white-space:nowrap}
+.src.pipedrive{color:var(--accent);background:var(--accent-soft)}
+.count{color:var(--ink-2);font-size:13.5px;margin:10px 2px}
+.empty{padding:36px;text-align:center;color:var(--ink-2)}
+
+.drawer{position:fixed;inset:0;display:none;z-index:50}
+.drawer.open{display:block}
+.drawer .veil{position:absolute;inset:0;background:rgba(10,14,25,.45)}
+.panel{position:absolute;top:0;right:0;bottom:0;width:min(440px,92vw);background:var(--surface);
+  border-left:1px solid var(--border);padding:26px 26px 40px;overflow-y:auto;box-shadow:var(--shadow)}
+.panel h3{font:700 22px/1.2 "Bricolage Grotesque",sans-serif;margin:4px 0 2px}
+.panel .close{position:absolute;top:16px;right:16px;border:1px solid var(--border-strong);background:var(--surface);
+  color:var(--ink-2);border-radius:8px;width:32px;height:32px;font-size:16px;cursor:pointer}
+.kv{display:grid;grid-template-columns:130px 1fr;gap:7px 14px;margin-top:18px;font-size:14px}
+.kv dt{color:var(--ink-2)}
+.kv dd{margin:0;word-break:break-word}
+.playbook{margin-top:20px;background:var(--accent-soft);border-radius:10px;padding:14px 16px}
+.playbook .lbl{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.playbook b{display:block;font-size:16px;margin:3px 0 2px}
+.playbook p{margin:0;color:var(--ink-2);font-size:13.5px}
+footer{margin-top:26px;color:var(--ink-3);font-size:12.5px}
+@media (max-width:820px){.kpis{grid-template-columns:repeat(2,1fr)}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">Market&nbsp;Radar <small>· Mediaboard</small></div>
+    <div class="tagline">Celý trh PR profesionálů vedle Pipedrivu — kdo je zákazník, kdo prospekt a kudy na zbytek.</div>
+    <div class="databadge" id="badge">načítám…</div>
+  </header>
+
+  <section class="kpis" id="kpis"></section>
+
+  <section class="coverage">
+    <h2>Pokrytí trhu — firmy</h2>
+    <div class="covbar" id="covbar" role="img" aria-label="Podíl firem podle statusu"></div>
+    <div class="covlegend" id="covlegend"></div>
+  </section>
+
+  <div class="controls">
+    <div class="tabs" id="tabs">
+      <button data-tab="people" class="on">Lidé</button>
+      <button data-tab="companies">Firmy</button>
+    </div>
+    <div class="chips" id="chips"></div>
+    <select id="country"><option value="">Všechny země</option></select>
+    <select id="segment"><option value="">Všechny segmenty</option></select>
+    <input type="search" id="q" placeholder="Hledat jméno, firmu, pozici…">
+  </div>
+
+  <div class="count" id="count"></div>
+  <div class="tablewrap"><table>
+    <thead id="thead"></thead>
+    <tbody id="tbody"></tbody>
+  </table></div>
+
+  <footer>Skóre 0–100 = ICP fit + dosažitelnost + teplota vztahu. Atribuce „kudy na ně" je pravidlová — detail po kliknutí na řádek. Tabulka je řazená podle skóre.</footer>
+</div>
+
+<div class="drawer" id="drawer">
+  <div class="veil" id="veil"></div>
+  <aside class="panel" id="panel" role="dialog" aria-modal="true"></aside>
+</div>
+
+<script id="snapshot" type="application/json">{"summary": {"companies": {"customer": 3, "prospect": 3, "lost": 1, "market": 7}, "people": {"customer": 4, "prospect": 3, "lost": 1, "market": 16}}, "companies": [{"id": 1, "name": "Bluenote Communications", "name_norm": "bluenote communications", "domain": "bluenote.cz", "country": "Česko", "city": "Praha", "segment": "PR agentura", "employees": 35, "linkedin_url": "linkedin.com/company/bluenote", "monitoring_tool": "Mediaboard", "pipedrive_org_id": 101, "status": "customer", "sources": "pipedrive", "score": 85, "approach": "Péče & upsell", "approach_reason": "Zákazník — hlídat adopci, nabídnout další moduly a týmy.", "note": null, "updated_at": "2026-09-04 21:53:50"}, {"id": 2, "name": "Vltava PR", "name_norm": "vltava pr", "domain": "vltavapr.cz", "country": "Česko", "city": "Praha", "segment": "PR agentura", "employees": 18, "linkedin_url": "linkedin.com/company/vltavapr", "monitoring_tool": "Mediaboard", "pipedrive_org_id": 102, "status": "customer", "sources": "pipedrive", "score": 80, "approach": "Péče & upsell", "approach_reason": "Zákazník — hlídat adopci, nabídnout další moduly a týmy.", "note": null, "updated_at": "2026-09-04 21:53:50"}, {"id": 3, "name": "Helios Energy", "name_norm": "helios energy", "domain": "heliosenergy.cz", "country": "Česko", "city": "Praha", "segment": "In-house komunikace", "employees": 850, "linkedin_url": "linkedin.com/company/heliosenergy", "monitoring_tool": "Mediaboard", "pipedrive_org_id": 103, "status": "customer", "sources": "pipedrive", "score": 75, "approach": "Péče & upsell", "approach_reason": "Zákazník — hlídat adopci, nabídnout další moduly a týmy.", "note": null, "updated_at": "2026-09-04 21:53:50"}, {"id": 7, "name": "Granit Corporate Affairs", "name_norm": "granit corporate affairs", "domain": "granitca.cz", "country": "Česko", "city": "Praha", "segment": "Public affairs", "employees": 12, "linkedin_url": "linkedin.com/company/granitca", "monitoring_tool": "Newton Media", "pipedrive_org_id": 107, "status": "lost", "sources": "pipedrive", "score": 70, "approach": "Win-back", "approach_reason": "Ztracený deal — vrátit se s novou nabídkou.", "note": null, "updated_at": "2026-09-04 21:53:50"}, {"id": 12, "name": "Lumen Health PR", "name_norm": "lumen health pr", "domain": "lumenhealth.cz", "country": "Česko", "city": "Praha", "segment": "PR agentura", "employees": 11, "linkedin_url": "linkedin.com/company/lumenhealth", "monitoring_tool": "Newton Media", "pipedrive_org_id": null, "status": "market", "sources": "apra", "score": 70, "approach": "Competitive switch", "approach_reason": "Používají Newton Media — srovnávací pitch.", "note": null, "updated_at": "2026-09-04 21:53:50"}, {"id": 4, "name": "Orbis Media Relations", "name_norm": "orbis media relations", "domain": "orbismedia.cz", "country": "Česko", "city": "Brno", "segment": "PR agentura", "employees": 22, "linkedin_url": "linkedin.com/company/orbismedia", "monitoring_tool": "Monitora", "pipedrive_org_id": 104, "status": "prospect", "sources": "pipedrive", "score": 70, "approach": "Podpora dealu", "approach_reason": "V CRM — dotáhnout běžící konverzaci.", "note": null, "updated_at": "2026-09-04 21:53:50"}, {"id": 9, "name": "Wisła Communications", "name_norm": "wis a communications", "domain": "wislacomms.pl", "country": "Polsko", "city": "Varšava", "segment": "PR agentura", "employees": 40, "linkedin_url": "linkedin.com/company/wislacomms", "monitoring_tool": "Meltwater", "pipedrive_org_id": null, "status": "market", "sources": "apollo", "score": 70, "approach": "Competitive switch", "approach_reason": "Používají Meltwater — srovnávací pitch.", "note": null, "updated_at": "2026-09-04 21:53:50"}, {"id": 14, "name": "Danube Media House", "name_norm": "danube media house", "domain": "danubemedia.sk", "country": "Slovensko", "city": "Bratislava", "segment": "PR agentura", "employees": 19, "linkedin_url": "linkedin.com/company/danubemedia", "monitoring_tool": "Monitora", "pipedrive_org_id": null, "status": "market", "sources": "lemlist", "score": 65, "approach": "Competitive switch", "approach_reason": "Používají Monitora — srovnávací pitch.", "note": null, "updated_at": "2026-09-04 21:53:50"}, {"id": 8, "name": "Aurora Public Affairs", "name_norm": "aurora public affairs", "domain": "aurorapa.at", "country": "Rakousko", "city": "Vídeň", "segment": "Public affairs", "employees": 25, "linkedin_url": "linkedin.com/company/aurorapa", "monitoring_tool": "Meltwater", "pipedrive_org_id": null, "status": "market", "sources": "apollo", "score": 60, "approach": "Competitive switch", "approach_reason": "Používají Meltwater — srovnávací pitch.", "note": null, "updated_at": "2026-09-04 21:53:50"}, {"id": 10, "name": "Redwood & Steiner", "name_norm": "redwood steiner", "domain": "redwoodsteiner.de", "country": "Německo", "city": "Mnichov", "segment": "PR agentura", "employees": 60, "linkedin_url": "linkedin.com/company/redwoodsteiner", "monitoring_tool": null, "pipedrive_org_id": null, "status": "market", "sources": "apollo", "score": 60, "approach": "Otevřít konverzaci", "approach_reason": "Nepokrytá firma se známými kontakty — první outreach.", "note": null, "updated_at": "2026-09-04 21:53:50"}, {"id": 5, "name": "Skylark PR Partners", "name_norm": "skylark pr partners", "domain": "skylarkpr.sk", "country": "Slovensko", "city": "Bratislava", "segment": "PR agentura", "employees": 14, "linkedin_url": "linkedin.com/company/skylarkpr", "monitoring_tool": null, "pipedrive_org_id": 105, "status": "prospect", "sources": "pipedrive", "score": 60, "approach": "Podpora dealu", "approach_reason": "V CRM — dotáhnout běžící konverzaci.", "note": null, "updated_at": "2026-09-04 21:53:50"}, {"id": 11, "name": "Ateliér Komunikace", "name_norm": "atelier komunikace", "domain": "atelierkomunikace.cz", "country": "Česko", "city": "Ostrava", "segment": "PR agentura", "employees": 8, "linkedin_url": "linkedin.com/company/atelierkomunikace", "monitoring_tool": "žádný", "pipedrive_org_id": null, "status": "market", "sources": "apra", "score": 55, "approach": "Otevřít konverzaci", "approach_reason": "Nepokrytá firma se známými kontakty — první outreach.", "note": null, "updated_at": "2026-09-04 21:53:50"}, {"id": 13, "name": "Signum Crisis Management", "name_norm": "signum crisis management", "domain": "signumcrisis.cz", "country": "Česko", "city": "Praha", "segment": "PR agentura", "employees": 6, "linkedin_url": "linkedin.com/company/signumcrisis", "monitoring_tool": null, "pipedrive_org_id": null, "status": "market", "sources": "lemlist", "score": 55, "approach": "Otevřít konverzaci", "approach_reason": "Nepokrytá firma se známými kontakty — první outreach.", "note": null, "updated_at": "2026-09-04 21:53:50"}, {"id": 6, "name": "Nordwind Software", "name_norm": "nordwind software", "domain": "nordwind.io", "country": "Česko", "city": "Praha", "segment": "In-house komunikace", "employees": 320, "linkedin_url": "linkedin.com/company/nordwind", "monitoring_tool": "žádný", "pipedrive_org_id": 106, "status": "prospect", "sources": "pipedrive", "score": 50, "approach": "Podpora dealu", "approach_reason": "V CRM — dotáhnout běžící konverzaci.", "note": null, "updated_at": "2026-09-04 21:53:50"}], "people": [{"id": 1, "company_id": 1, "full_name": "Jana Skalická", "name_norm": "jana skalicka", "title": "Managing Director", "seniority": null, "email": "jana.skalicka@bluenote.cz", "phone": "+420601111222", "linkedin_url": "linkedin.com/in/janaskalicka", "country": null, "pipedrive_person_id": 201, "status": "customer", "sources": "pipedrive", "score": 100, "approach": "Péče & upsell", "approach_reason": "Aktivní zákazník — rozšíření licencí a modulů.", "updated_at": "2026-09-04 21:53:50", "company_name": "Bluenote Communications", "company_domain": "bluenote.cz", "company_segment": "PR agentura", "company_country": "Česko", "company_status": "customer"}, {"id": 6, "company_id": 3, "full_name": "Marek Louda", "name_norm": "marek louda", "title": "Ředitel komunikace", "seniority": null, "email": "marek.louda@heliosenergy.cz", "phone": "+420603555666", "linkedin_url": "linkedin.com/in/marekloud", "country": null, "pipedrive_person_id": 204, "status": "customer", "sources": "pipedrive", "score": 100, "approach": "Péče & upsell", "approach_reason": "Aktivní zákazník — rozšíření licencí a modulů.", "updated_at": "2026-09-04 21:53:50", "company_name": "Helios Energy", "company_domain": "heliosenergy.cz", "company_segment": "In-house komunikace", "company_country": "Česko", "company_status": "customer"}, {"id": 4, "company_id": 2, "full_name": "Petr Hájenka", "name_norm": "petr hajenka", "title": "CEO", "seniority": null, "email": "petr@vltavapr.cz", "phone": "+420602333444", "linkedin_url": null, "country": null, "pipedrive_person_id": 203, "status": "customer", "sources": "pipedrive", "score": 100, "approach": "Péče & upsell", "approach_reason": "Aktivní zákazník — rozšíření licencí a modulů.", "updated_at": "2026-09-04 21:53:50", "company_name": "Vltava PR", "company_domain": "vltavapr.cz", "company_segment": "PR agentura", "company_country": "Česko", "company_status": "customer"}, {"id": 2, "company_id": 1, "full_name": "Tomáš Vrba", "name_norm": "tomas vrba", "title": "Account Director", "seniority": null, "email": "tomas.vrba@bluenote.cz", "phone": null, "linkedin_url": "linkedin.com/in/tomasvrba", "country": null, "pipedrive_person_id": 202, "status": "customer", "sources": "pipedrive", "score": 100, "approach": "Péče & upsell", "approach_reason": "Aktivní zákazník — rozšíření licencí a modulů.", "updated_at": "2026-09-04 21:53:50", "company_name": "Bluenote Communications", "company_domain": "bluenote.cz", "company_segment": "PR agentura", "company_country": "Česko", "company_status": "customer"}, {"id": 16, "company_id": 9, "full_name": "Agnieszka Wolska", "name_norm": "agnieszka wolska", "title": "Head of Media Relations", "seniority": null, "email": "a.wolska@wislacomms.pl", "phone": null, "linkedin_url": "linkedin.com/in/agnieszkawolska", "country": null, "pipedrive_person_id": null, "status": "market", "sources": "apollo", "score": 95, "approach": "Competitive switch", "approach_reason": "Používají Meltwater — srovnávací pitch + trial.", "updated_at": "2026-09-04 21:53:50", "company_name": "Wisła Communications", "company_domain": "wislacomms.pl", "company_segment": "PR agentura", "company_country": "Polsko", "company_status": "market"}, {"id": 5, "company_id": 2, "full_name": "Alice Zimová", "name_norm": "alice zimova", "title": "Senior PR Manager", "seniority": null, "email": "alice.zimova@vltavapr.cz", "phone": null, "linkedin_url": "linkedin.com/in/alicezimova", "country": null, "pipedrive_person_id": null, "status": "market", "sources": "lemlist", "score": 95, "approach": "Expanze u zákazníka", "approach_reason": "Vltava PR už Mediaboard používá — warm intro přes CS tým.", "updated_at": "2026-09-04 21:53:50", "company_name": "Vltava PR", "company_domain": "vltavapr.cz", "company_segment": "PR agentura", "company_country": "Česko", "company_status": "customer"}, {"id": 8, "company_id": 4, "full_name": "Filip Otava", "name_norm": "filip otava", "title": "Managing Partner", "seniority": null, "email": "filip.otava@orbismedia.cz", "phone": null, "linkedin_url": "linkedin.com/in/filipotava", "country": null, "pipedrive_person_id": 205, "status": "prospect", "sources": "pipedrive", "score": 95, "approach": "Podpora dealu", "approach_reason": "Otevřený deal — držet momentum, další krok v Pipedrivu.", "updated_at": "2026-09-04 21:53:50", "company_name": "Orbis Media Relations", "company_domain": "orbismedia.cz", "company_segment": "PR agentura", "company_country": "Česko", "company_status": "prospect"}, {"id": 24, "company_id": 14, "full_name": "Nina Ďurišová", "name_norm": "nina durisova", "title": "Head of Client Service", "seniority": null, "email": "nina@danubemedia.sk", "phone": null, "linkedin_url": "linkedin.com/in/ninadurisova", "country": null, "pipedrive_person_id": null, "status": "market", "sources": "lemlist", "score": 95, "approach": "Competitive switch", "approach_reason": "Používají Monitora — srovnávací pitch + trial.", "updated_at": "2026-09-04 21:53:50", "company_name": "Danube Media House", "company_domain": "danubemedia.sk", "company_segment": "PR agentura", "company_country": "Slovensko", "company_status": "market"}, {"id": 13, "company_id": 7, "full_name": "Ondřej Šindel", "name_norm": "ondrej sindel", "title": "Managing Partner", "seniority": null, "email": "ondrej.sindel@granitca.cz", "phone": "+420604777888", "linkedin_url": null, "country": null, "pipedrive_person_id": 208, "status": "lost", "sources": "pipedrive", "score": 95, "approach": "Win-back", "approach_reason": "Vrátit se s novinkami v produktu (ztracený deal v posledních 18 měsících).", "updated_at": "2026-09-04 21:53:50", "company_name": "Granit Corporate Affairs", "company_domain": "granitca.cz", "company_segment": "Public affairs", "company_country": "Česko", "company_status": "lost"}, {"id": 21, "company_id": 12, "full_name": "Vojtěch Malík", "name_norm": "vojtech malik", "title": "Managing Director", "seniority": null, "email": "vojtech.malik@lumenhealth.cz", "phone": null, "linkedin_url": "linkedin.com/in/vojtechmalik", "country": null, "pipedrive_person_id": null, "status": "market", "sources": "apra", "score": 95, "approach": "Competitive switch", "approach_reason": "Používají Newton Media — srovnávací pitch + trial.", "updated_at": "2026-09-04 21:53:50", "company_name": "Lumen Health PR", "company_domain": "lumenhealth.cz", "company_segment": "PR agentura", "company_country": "Česko", "company_status": "market"}, {"id": 3, "company_id": 1, "full_name": "Klára Dunková", "name_norm": "klara dunkova", "title": "Head of Digital", "seniority": null, "email": null, "phone": null, "linkedin_url": "linkedin.com/in/klaradunkova", "country": null, "pipedrive_person_id": null, "status": "market", "sources": "apollo", "score": 90, "approach": "Expanze u zákazníka", "approach_reason": "Bluenote Communications už Mediaboard používá — warm intro přes CS tým.", "updated_at": "2026-09-04 21:53:50", "company_name": "Bluenote Communications", "company_domain": "bluenote.cz", "company_segment": "PR agentura", "company_country": "Česko", "company_status": "customer"}, {"id": 7, "company_id": 3, "full_name": "Eva Krásová", "name_norm": "eva krasova", "title": "Tisková mluvčí", "seniority": null, "email": null, "phone": null, "linkedin_url": "linkedin.com/in/evakrasova", "country": null, "pipedrive_person_id": null, "status": "market", "sources": "apollo", "score": 85, "approach": "Expanze u zákazníka", "approach_reason": "Helios Energy už Mediaboard používá — warm intro přes CS tým.", "updated_at": "2026-09-04 21:53:50", "company_name": "Helios Energy", "company_domain": "heliosenergy.cz", "company_segment": "In-house komunikace", "company_country": "Česko", "company_status": "customer"}, {"id": 14, "company_id": 8, "full_name": "Ingrid Bauer", "name_norm": "ingrid bauer", "title": "Managing Director", "seniority": null, "email": "i.bauer@aurorapa.at", "phone": null, "linkedin_url": "linkedin.com/in/ingridbauer", "country": null, "pipedrive_person_id": null, "status": "market", "sources": "apollo", "score": 85, "approach": "Competitive switch", "approach_reason": "Používají Meltwater — srovnávací pitch + trial.", "updated_at": "2026-09-04 21:53:50", "company_name": "Aurora Public Affairs", "company_domain": "aurorapa.at", "company_segment": "Public affairs", "company_country": "Rakousko", "company_status": "market"}, {"id": 18, "company_id": 10, "full_name": "Ute Steiner", "name_norm": "ute steiner", "title": "Managing Partner", "seniority": null, "email": "steiner@redwoodsteiner.de", "phone": null, "linkedin_url": "linkedin.com/in/utesteiner", "country": null, "pipedrive_person_id": null, "status": "market", "sources": "apollo", "score": 85, "approach": "LinkedIn outreach", "approach_reason": "Senior role s LinkedIn profilem — personalizovaný connect.", "updated_at": "2026-09-04 21:53:50", "company_name": "Redwood & Steiner", "company_domain": "redwoodsteiner.de", "company_segment": "PR agentura", "company_country": "Německo", "company_status": "market"}, {"id": 10, "company_id": 5, "full_name": "Zuzana Kováčová", "name_norm": "zuzana kovacova", "title": "Head of Communications", "seniority": null, "email": "zuzana@skylarkpr.sk", "phone": null, "linkedin_url": "linkedin.com/in/zuzanakovacova", "country": null, "pipedrive_person_id": 206, "status": "prospect", "sources": "pipedrive", "score": 85, "approach": "Podpora dealu", "approach_reason": "Otevřený deal — držet momentum, další krok v Pipedrivu.", "updated_at": "2026-09-04 21:53:50", "company_name": "Skylark PR Partners", "company_domain": "skylarkpr.sk", "company_segment": "PR agentura", "company_country": "Slovensko", "company_status": "prospect"}, {"id": 20, "company_id": 11, "full_name": "Radka Přibylová", "name_norm": "radka pribylova", "title": "Majitelka & PR ředitelka", "seniority": null, "email": "radka@atelierkomunikace.cz", "phone": "+420605999000", "linkedin_url": null, "country": null, "pipedrive_person_id": null, "status": "market", "sources": "apra", "score": 80, "approach": "E-mail sekvence (lemlist)", "approach_reason": "Ověřený e-mail — zařadit do segmentované sekvence.", "updated_at": "2026-09-04 21:53:50", "company_name": "Ateliér Komunikace", "company_domain": "atelierkomunikace.cz", "company_segment": "PR agentura", "company_country": "Česko", "company_status": "market"}, {"id": 12, "company_id": 6, "full_name": "Barbora Nguyen", "name_norm": "barbora nguyen", "title": "Communications Lead", "seniority": null, "email": "barbora.nguyen@nordwind.io", "phone": null, "linkedin_url": "linkedin.com/in/barboranguyen", "country": null, "pipedrive_person_id": 207, "status": "prospect", "sources": "pipedrive", "score": 70, "approach": "Podpora dealu", "approach_reason": "Otevřený deal — držet momentum, další krok v Pipedrivu.", "updated_at": "2026-09-04 21:53:50", "company_name": "Nordwind Software", "company_domain": "nordwind.io", "company_segment": "In-house komunikace", "company_country": "Česko", "company_status": "prospect"}, {"id": 11, "company_id": 5, "full_name": "Milan Hruška", "name_norm": "milan hruska", "title": "Account Manager", "seniority": null, "email": null, "phone": null, "linkedin_url": "linkedin.com/in/milanhruska", "country": null, "pipedrive_person_id": null, "status": "market", "sources": "lemlist", "score": 70, "approach": "Multithreading", "approach_reason": "Ve firmě běží deal — přidat dalšího stakeholdera.", "updated_at": "2026-09-04 21:53:50", "company_name": "Skylark PR Partners", "company_domain": "skylarkpr.sk", "company_segment": "PR agentura", "company_country": "Slovensko", "company_status": "prospect"}, {"id": 22, "company_id": 12, "full_name": "Šárka Rosová", "name_norm": "sarka rosova", "title": "Healthcare PR Manager", "seniority": null, "email": null, "phone": null, "linkedin_url": "linkedin.com/in/sarkarosova", "country": null, "pipedrive_person_id": null, "status": "market", "sources": "apra", "score": 70, "approach": "Competitive switch", "approach_reason": "Používají Newton Media — srovnávací pitch + trial.", "updated_at": "2026-09-04 21:53:50", "company_name": "Lumen Health PR", "company_domain": "lumenhealth.cz", "company_segment": "PR agentura", "company_country": "Česko", "company_status": "market"}, {"id": 9, "company_id": 4, "full_name": "Lucie Bártová", "name_norm": "lucie bartova", "title": "PR Specialist", "seniority": null, "email": "lucie.bartova@orbismedia.cz", "phone": null, "linkedin_url": null, "country": null, "pipedrive_person_id": null, "status": "market", "sources": "apollo", "score": 65, "approach": "Multithreading", "approach_reason": "Ve firmě běží deal — přidat dalšího stakeholdera.", "updated_at": "2026-09-04 21:53:50", "company_name": "Orbis Media Relations", "company_domain": "orbismedia.cz", "company_segment": "PR agentura", "company_country": "Česko", "company_status": "prospect"}, {"id": 23, "company_id": 13, "full_name": "David Signer", "name_norm": "david signer", "title": "Crisis Director", "seniority": null, "email": null, "phone": null, "linkedin_url": null, "country": null, "pipedrive_person_id": null, "status": "market", "sources": "lemlist", "score": 60, "approach": "Enrichment", "approach_reason": "Chybí kontakt — dohledat e-mail/LinkedIn (Apollo, lemlist).", "updated_at": "2026-09-04 21:53:50", "company_name": "Signum Crisis Management", "company_domain": "signumcrisis.cz", "company_segment": "PR agentura", "company_country": "Česko", "company_status": "market"}, {"id": 19, "company_id": 10, "full_name": "Jonas Beck", "name_norm": "jonas beck", "title": "Communications Manager", "seniority": null, "email": null, "phone": null, "linkedin_url": "linkedin.com/in/jonasbeck", "country": null, "pipedrive_person_id": null, "status": "market", "sources": "apollo", "score": 60, "approach": "Enrichment", "approach_reason": "Chybí kontakt — dohledat e-mail/LinkedIn (Apollo, lemlist).", "updated_at": "2026-09-04 21:53:50", "company_name": "Redwood & Steiner", "company_domain": "redwoodsteiner.de", "company_segment": "PR agentura", "company_country": "Německo", "company_status": "market"}, {"id": 15, "company_id": 8, "full_name": "Stefan Krall", "name_norm": "stefan krall", "title": "Senior Consultant", "seniority": null, "email": null, "phone": null, "linkedin_url": "linkedin.com/in/stefankrall", "country": null, "pipedrive_person_id": null, "status": "market", "sources": "apollo", "score": 60, "approach": "Competitive switch", "approach_reason": "Používají Meltwater — srovnávací pitch + trial.", "updated_at": "2026-09-04 21:53:50", "company_name": "Aurora Public Affairs", "company_domain": "aurorapa.at", "company_segment": "Public affairs", "company_country": "Rakousko", "company_status": "market"}, {"id": 17, "company_id": 9, "full_name": "Paweł Zieliński", "name_norm": "pawe zielinski", "title": "PR Executive", "seniority": null, "email": null, "phone": null, "linkedin_url": null, "country": null, "pipedrive_person_id": null, "status": "market", "sources": "apollo", "score": 50, "approach": "Competitive switch", "approach_reason": "Používají Meltwater — srovnávací pitch + trial.", "updated_at": "2026-09-04 21:53:50", "company_name": "Wisła Communications", "company_domain": "wislacomms.pl", "company_segment": "PR agentura", "company_country": "Polsko", "company_status": "market"}], "deals": [{"id": 1, "pipedrive_deal_id": 301, "company_id": 1, "person_id": null, "title": "Mediaboard licence 2026", "status": "won", "value": 96000.0, "currency": "CZK", "closed_at": "2026-01-15"}, {"id": 2, "pipedrive_deal_id": 302, "company_id": 2, "person_id": null, "title": "Mediaboard licence 2025", "status": "won", "value": 54000.0, "currency": "CZK", "closed_at": "2025-11-02"}, {"id": 3, "pipedrive_deal_id": 303, "company_id": 3, "person_id": null, "title": "Enterprise monitoring", "status": "won", "value": 180000.0, "currency": "CZK", "closed_at": "2026-03-20"}, {"id": 4, "pipedrive_deal_id": 304, "company_id": 4, "person_id": null, "title": "Nabídka pro Orbis", "status": "open", "value": 60000.0, "currency": "CZK", "closed_at": null}, {"id": 5, "pipedrive_deal_id": 305, "company_id": 5, "person_id": null, "title": "Skylark trial → licence", "status": "open", "value": 42000.0, "currency": "CZK", "closed_at": null}, {"id": 6, "pipedrive_deal_id": 306, "company_id": 6, "person_id": null, "title": "Nordwind — pilot", "status": "open", "value": 75000.0, "currency": "CZK", "closed_at": null}, {"id": 7, "pipedrive_deal_id": 307, "company_id": 7, "person_id": null, "title": "Granit licence", "status": "lost", "value": 48000.0, "currency": "CZK", "closed_at": "2026-02-10"}]}</script>
+<script>
+const STATUS = {
+  customer:{label:'Zákazník'},
+  prospect:{label:'Prospekt'},
+  lost:{label:'Ztracený'},
+  market:{label:'Nepokrytý trh'},
+};
+const ORDER = ['customer','prospect','lost','market'];
+const state = {tab:'people', status:'', country:'', segment:'', q:'', data:null};
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+async function load(){
+  try{
+    const r = await fetch('/api/data', {signal: AbortSignal.timeout(2500)});
+    if(!r.ok) throw new Error(r.status);
+    state.data = await r.json();
+    $('badge').textContent = 'živá data';
+    $('badge').classList.add('live');
+  }catch(e){
+    state.data = JSON.parse($('snapshot').textContent);
+    $('badge').textContent = state.data ? 'demo snapshot' : 'bez dat';
+  }
+  if(!state.data){ $('count').textContent = 'Žádná data — spusť python -m app.demo_seed a obnov stránku.'; return; }
+  buildFilters(); renderSummary(); renderTable();
+}
+
+function buildFilters(){
+  const chips = [['', 'Vše'], ...ORDER.map(k => [k, STATUS[k].label])];
+  $('chips').innerHTML = chips.map(([v,l]) =>
+    `<button class="chip${v===state.status?' on':''}" data-v="${v}">${l}</button>`).join('');
+  $('chips').querySelectorAll('.chip').forEach(b => b.onclick = () => {
+    state.status = b.dataset.v; buildFilters(); renderTable();
+  });
+  const rows = state.data.companies;
+  fillSelect('country', [...new Set(rows.map(c => c.country).filter(Boolean))].sort());
+  fillSelect('segment', [...new Set(rows.map(c => c.segment).filter(Boolean))].sort());
+}
+function fillSelect(id, values){
+  const sel = $(id), current = state[id];
+  sel.innerHTML = sel.options[0].outerHTML + values.map(v =>
+    `<option${v===current?' selected':''}>${esc(v)}</option>`).join('');
+}
+
+function renderSummary(){
+  const c = state.data.summary.companies, p = state.data.summary.people;
+  const totalC = ORDER.reduce((n,k)=>n+c[k],0), totalP = ORDER.reduce((n,k)=>n+p[k],0);
+  const covered = totalC ? Math.round(100*(totalC-c.market)/totalC) : 0;
+  $('kpis').innerHTML = `
+    <div class="kpi"><div class="lbl">Trh v Radaru</div><div class="val">${totalC}</div><div class="sub">firem · ${totalP} lidí</div></div>
+    <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--s-customer)"></span>Zákazníci</div><div class="val">${c.customer}</div><div class="sub">${p.customer} lidí u zákazníků</div></div>
+    <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--s-prospect)"></span>Prospekti</div><div class="val">${c.prospect}</div><div class="sub">+ ${c.lost} ztracených (win-back)</div></div>
+    <div class="kpi"><div class="lbl"><span class="dot" style="background:var(--s-market)"></span>Nepokrytý trh</div><div class="val">${c.market}</div><div class="sub">pokrytí trhu ${covered} %</div></div>`;
+  $('covbar').innerHTML = ORDER.map(k => c[k] ? `<div class="seg" style="flex:${c[k]} ${c[k]} 0;background:var(--s-${k})"
+      title="${STATUS[k].label}: ${c[k]} firem (${Math.round(100*c[k]/totalC)} %)"></div>` : '').join('');
+  $('covlegend').innerHTML = ORDER.map(k =>
+    `<span><span class="dot" style="background:var(--s-${k})"></span>${STATUS[k].label} <b>${c[k]}</b> · ${totalC?Math.round(100*c[k]/totalC):0}&nbsp;%</span>`).join('');
+}
+
+function matches(row, isPerson){
+  const country = isPerson ? (row.country || row.company_country) : row.country;
+  const segment = isPerson ? row.company_segment : row.segment;
+  if(state.status && row.status !== state.status) return false;
+  if(state.country && country !== state.country) return false;
+  if(state.segment && segment !== state.segment) return false;
+  if(state.q){
+    const hay = [row.full_name, row.name, row.title, row.company_name, row.domain, row.email, row.segment]
+      .filter(Boolean).join(' ').toLowerCase();
+    if(!hay.includes(state.q.toLowerCase())) return false;
+  }
+  return true;
+}
+
+const pill = s => `<span class="pill ${s}">${STATUS[s]?.label ?? s}</span>`;
+const scoreCell = v => `<div class="score"><b>${v}</b><div class="track"><div class="fill" style="width:${v}%"></div></div></div>`;
+const srcCell = s => `<div class="srcs">${(s||'').split(',').filter(Boolean).map(x=>`<span class="src ${x}">${esc(x)}</span>`).join('')}</div>`;
+
+function renderTable(){
+  const isPerson = state.tab === 'people';
+  const rows = (isPerson ? state.data.people : state.data.companies).filter(r => matches(r, isPerson));
+  $('count').textContent = `${rows.length} ${isPerson?'lidí':'firem'}${state.status?` · ${STATUS[state.status].label.toLowerCase()}`:''}, řazeno podle skóre`;
+  $('thead').innerHTML = isPerson
+    ? '<tr><th>Jméno</th><th>Firma</th><th>Status</th><th>Skóre</th><th>Kudy na ně</th><th>Zdroje</th></tr>'
+    : '<tr><th>Firma</th><th>Země</th><th>Segment</th><th>Status</th><th>Skóre</th><th>Kudy na ně</th><th>Zdroje</th></tr>';
+  $('tbody').innerHTML = rows.length ? rows.map((r,i) => isPerson ? `
+    <tr data-i="${i}" tabindex="0">
+      <td><div class="name">${esc(r.full_name)}</div><div class="mut">${esc(r.title||'')}</div></td>
+      <td><div>${esc(r.company_name||'—')}</div><div class="mut2">${esc(r.company_segment||'')}${r.company_country?' · '+esc(r.company_country):''}</div></td>
+      <td>${pill(r.status)}</td><td>${scoreCell(r.score)}</td>
+      <td class="appr"><b>${esc(r.approach||'')}</b><div class="mut2">${esc(r.approach_reason||'')}</div></td>
+      <td>${srcCell(r.sources)}</td></tr>` : `
+    <tr data-i="${i}" tabindex="0">
+      <td><div class="name">${esc(r.name)}</div><div class="mut2">${esc(r.domain||'')}</div></td>
+      <td>${esc(r.country||'—')}</td><td>${esc(r.segment||'—')}</td>
+      <td>${pill(r.status)}</td><td>${scoreCell(r.score)}</td>
+      <td class="appr"><b>${esc(r.approach||'')}</b><div class="mut2">${esc(r.approach_reason||'')}</div></td>
+      <td>${srcCell(r.sources)}</td></tr>`).join('')
+    : `<tr><td colspan="7"><div class="empty">Nic neodpovídá filtrům.</div></td></tr>`;
+  $('tbody').querySelectorAll('tr[data-i]').forEach(tr => {
+    const open = () => openDetail(rows[+tr.dataset.i], isPerson);
+    tr.onclick = open;
+    tr.onkeydown = e => { if(e.key==='Enter') open(); };
+  });
+}
+
+function openDetail(r, isPerson){
+  const company = isPerson ? state.data.companies.find(c => c.id === r.company_id) : r;
+  const deals = state.data.deals.filter(d => d.company_id === (company?.id));
+  const kv = [];
+  if(isPerson){
+    kv.push(['Pozice', r.title], ['Firma', r.company_name], ['E-mail', r.email], ['Telefon', r.phone],
+            ['LinkedIn', r.linkedin_url], ['Země', r.country || r.company_country]);
+  }else{
+    kv.push(['Doména', r.domain], ['Země', [r.city, r.country].filter(Boolean).join(', ')],
+            ['Segment', r.segment], ['Zaměstnanci', r.employees],
+            ['Monitoring', r.monitoring_tool], ['LinkedIn', r.linkedin_url]);
+  }
+  kv.push(['Zdroje', (r.sources||'').split(',').join(', ')]);
+  if(deals.length) kv.push(['Dealy', deals.map(d =>
+    `${d.title} — ${({open:'běží',won:'vyhraný',lost:'ztracený'})[d.status]||d.status}${d.value?` (${Number(d.value).toLocaleString('cs')} ${d.currency||''})`:''}`).join(' · ')]);
+  $('panel').innerHTML = `
+    <button class="close" id="close" aria-label="Zavřít">✕</button>
+    <div>${pill(r.status)}</div>
+    <h3>${esc(isPerson ? r.full_name : r.name)}</h3>
+    <div class="mut">${esc(isPerson ? (r.title||'') : (r.segment||''))}</div>
+    <div class="playbook"><div class="lbl">Kudy na ně · skóre ${r.score}/100</div>
+      <b>${esc(r.approach||'')}</b><p>${esc(r.approach_reason||'')}</p></div>
+    <dl class="kv">${kv.filter(([,v])=>v!==null&&v!==undefined&&v!=='').map(([k,v])=>`<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>`;
+  $('drawer').classList.add('open');
+  $('close').onclick = closeDetail;
+}
+const closeDetail = () => $('drawer').classList.remove('open');
+$('veil').onclick = closeDetail;
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeDetail(); });
+
+$('tabs').querySelectorAll('button').forEach(b => b.onclick = () => {
+  state.tab = b.dataset.tab;
+  $('tabs').querySelectorAll('button').forEach(x => x.classList.toggle('on', x===b));
+  renderTable();
+});
+$('country').onchange = e => { state.country = e.target.value; renderTable(); };
+$('segment').onchange = e => { state.segment = e.target.value; renderTable(); };
+$('q').oninput = e => { state.q = e.target.value; renderTable(); };
+
+load();
+</script>
