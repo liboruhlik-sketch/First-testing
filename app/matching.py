@@ -16,8 +16,9 @@ def normalize_name(name: str) -> str:
     text = unicodedata.normalize("NFKD", name)
     text = "".join(c for c in text if not unicodedata.combining(c))
     text = LEGAL_SUFFIXES.sub("", text.strip())
-    text = re.sub(r"[^a-z0-9]+", " ", text.lower()).strip()
-    return text
+    ascii_norm = re.sub(r"[^a-z0-9]+", " ", text.lower()).strip()
+    # Nelatinkové názvy (arabština, azbuka…) by se vyprázdnily — drž aspoň lowercase originálu.
+    return ascii_norm or text.lower().strip()
 
 
 def normalize_domain(value: str) -> str:
