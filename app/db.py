@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS companies (
     name TEXT NOT NULL,
     name_norm TEXT NOT NULL,
     domain TEXT,
+    ico TEXT,
     country TEXT,
     city TEXT,
     segment TEXT,
@@ -74,6 +75,10 @@ def connect() -> sqlite3.Connection:
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     conn.executescript(SCHEMA)
+    try:  # migrace starších databází
+        conn.execute("ALTER TABLE companies ADD COLUMN ico TEXT")
+    except sqlite3.OperationalError:
+        pass
     return conn
 
 
