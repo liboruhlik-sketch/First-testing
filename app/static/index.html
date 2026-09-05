@@ -79,7 +79,7 @@ input[type=search]{min-width:200px;flex:1}
 button:focus-visible,select:focus-visible,input:focus-visible,tr:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 .tablewrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow-x:auto;box-shadow:var(--shadow)}
-table{border-collapse:collapse;width:100%;min-width:860px}
+table{border-collapse:collapse;width:100%;min-width:1000px}
 th{font:600 11.5px "Instrument Sans",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);
   text-align:left;padding:12px 14px;border-bottom:1px solid var(--border);white-space:nowrap}
 td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:top}
@@ -99,6 +99,10 @@ tbody tr:last-child td{border-bottom:0}
 .track{flex:1;height:5px;border-radius:3px;background:var(--surface-2);min-width:44px}
 .fill{height:100%;border-radius:3px;background:var(--accent)}
 .appr b{font-weight:600}
+.chset{display:flex;gap:4px;flex-wrap:wrap;max-width:190px}
+.ch{font:600 11px "Instrument Sans",sans-serif;border-radius:5px;padding:2px 7px;white-space:nowrap;
+  background:var(--accent-soft);color:var(--accent)}
+.ch.off{background:transparent;color:var(--ink-3);border:1px dashed var(--border-strong);padding:1px 6px;font-weight:500}
 .srcs{display:flex;gap:4px;flex-wrap:wrap}
 .src{font:500 11px "Instrument Sans",sans-serif;color:var(--ink-2);background:var(--surface-2);
   border-radius:5px;padding:2px 7px;white-space:nowrap}
@@ -244,28 +248,33 @@ function matches(row, isPerson){
 const pill = s => `<span class="pill ${s}">${STATUS[s]?.label ?? s}</span>`;
 const scoreCell = v => `<div class="score"><b>${v}</b><div class="track"><div class="fill" style="width:${v}%"></div></div></div>`;
 const srcCell = s => `<div class="srcs">${(s||'').split(',').filter(Boolean).map(x=>`<span class="src ${x}">${esc(x)}</span>`).join('')}</div>`;
+const chan = (val, label) => `<span class="ch${val?'':' off'}" title="${val?esc(val):label+' chybí'}">${label}</span>`;
+const personChannels = r => `<div class="chset">${chan(r.email,'e-mail')+chan(r.phone,'telefon')+chan(r.linkedin_url,'LinkedIn')+chan(r.company_domain,'web')}</div>`;
+const companyChannels = r => `<div class="chset">${chan(r.domain,'web')+chan(r.linkedin_url,'LinkedIn')+chan(r.ico,'IČO')}</div>`;
 
 function renderTable(){
   const isPerson = state.tab === 'people';
   const rows = (isPerson ? state.data.people : state.data.companies).filter(r => matches(r, isPerson));
   $('count').textContent = `${rows.length} ${isPerson?'lidí':'firem'}${state.status?` · ${STATUS[state.status].label.toLowerCase()}`:''}, řazeno podle skóre`;
   $('thead').innerHTML = isPerson
-    ? '<tr><th>Jméno</th><th>Firma</th><th>Status</th><th>Skóre</th><th>Kudy na ně</th><th>Zdroje</th></tr>'
-    : '<tr><th>Firma</th><th>Země</th><th>Segment</th><th>Status</th><th>Skóre</th><th>Kudy na ně</th><th>Zdroje</th></tr>';
+    ? '<tr><th>Jméno</th><th>Firma</th><th>Status</th><th>Skóre</th><th>Kontakty</th><th>Kudy na ně</th><th>Zdroje</th></tr>'
+    : '<tr><th>Firma</th><th>Země</th><th>Segment</th><th>Status</th><th>Skóre</th><th>Kontakty</th><th>Kudy na ně</th><th>Zdroje</th></tr>';
   $('tbody').innerHTML = rows.length ? rows.map((r,i) => isPerson ? `
     <tr data-i="${i}" tabindex="0">
       <td><div class="name">${esc(r.full_name)}</div><div class="mut">${esc(r.title||'')}</div></td>
       <td><div>${esc(r.company_name||'—')}</div><div class="mut2">${esc(r.company_segment||'')}${r.company_country?' · '+esc(r.company_country):''}</div></td>
       <td>${pill(r.status)}</td><td>${scoreCell(r.score)}</td>
+      <td>${personChannels(r)}</td>
       <td class="appr"><b>${esc(r.approach||'')}</b><div class="mut2">${esc(r.approach_reason||'')}</div></td>
       <td>${srcCell(r.sources)}</td></tr>` : `
     <tr data-i="${i}" tabindex="0">
       <td><div class="name">${esc(r.name)}</div><div class="mut2">${esc(r.domain||'')}</div></td>
       <td>${esc(r.country||'—')}</td><td>${esc(r.segment||'—')}</td>
       <td>${pill(r.status)}</td><td>${scoreCell(r.score)}</td>
+      <td>${companyChannels(r)}</td>
       <td class="appr"><b>${esc(r.approach||'')}</b><div class="mut2">${esc(r.approach_reason||'')}</div></td>
       <td>${srcCell(r.sources)}</td></tr>`).join('')
-    : `<tr><td colspan="7"><div class="empty">Nic neodpovídá filtrům.</div></td></tr>`;
+    : `<tr><td colspan="8"><div class="empty">Nic neodpovídá filtrům.</div></td></tr>`;
   $('tbody').querySelectorAll('tr[data-i]').forEach(tr => {
     const open = () => openDetail(rows[+tr.dataset.i], isPerson);
     tr.onclick = open;
@@ -279,7 +288,7 @@ function openDetail(r, isPerson){
   const kv = [];
   if(isPerson){
     kv.push(['Pozice', r.title], ['Firma', r.company_name], ['E-mail', r.email], ['Telefon', r.phone],
-            ['LinkedIn', r.linkedin_url], ['Země', r.country || r.company_country]);
+            ['LinkedIn', r.linkedin_url], ['Web firmy', r.company_domain], ['Země', r.country || r.company_country]);
   }else{
     kv.push(['Doména', r.domain], ['Země', [r.city, r.country].filter(Boolean).join(', ')],
             ['Segment', r.segment], ['Zaměstnanci', r.employees],

@@ -26,6 +26,9 @@ python -m app.import_market people    data/samples/market_people.csv    --source
 # 4) spustit dashboard
 uvicorn app.main:app --reload
 # → http://localhost:8000
+
+# volitelně: schovat aplikaci za přihlášení (HTTP Basic)
+export RADAR_PASSWORD=silné-heslo   # uživatel: mediaboard (změna přes RADAR_USER)
 ```
 
 Frontend (`app/static/index.html`) funguje i samostatně bez backendu —

@@ -1,15 +1,41 @@
-"""FastAPI server Market Radaru — jedno API (/api/data) + statický dashboard."""
+"""FastAPI server Market Radaru — jedno API (/api/data) + statický dashboard.
 
+Zabezpečení: nastav RADAR_PASSWORD (a volitelně RADAR_USER, výchozí „mediaboard")
+a celá aplikace se schová za HTTP Basic přihlášení. Bez nastavené proměnné běží
+otevřeně — určeno jen pro lokální vývoj. Detaily v docs/NAVRH.md, sekce Security.
+"""
+
+import base64
+import os
+import secrets
 from pathlib import Path
 
-from fastapi import FastAPI
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, Request
+from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 
 from .db import DB_PATH, connect
 
 app = FastAPI(title="Market Radar")
 STATIC = Path(__file__).parent / "static"
+
+
+@app.middleware("http")
+async def basic_auth(request: Request, call_next):
+    password = os.environ.get("RADAR_PASSWORD")
+    if password:
+        user_expected = os.environ.get("RADAR_USER", "mediaboard")
+        header = request.headers.get("authorization", "")
+        authorized = False
+        if header.startswith("Basic "):
+            try:
+                user, _, pwd = base64.b64decode(header[6:]).decode().partition(":")
+                authorized = secrets.compare_digest(user, user_expected) and secrets.compare_digest(pwd, password)
+            except Exception:
+                authorized = False
+        if not authorized:
+            return Response(status_code=401, headers={"WWW-Authenticate": 'Basic realm="Market Radar"'})
+    return await call_next(request)
 
 
 def snapshot() -> dict:

@@ -120,6 +120,29 @@ výhra tendru agenturou, mediální aktivita firmy z dat Mediaboardu.
   vztahy), job-change tracking, notifikace.
 - **F4:** Postgres, auth, hosting, více uživatelů, práva.
 
+## Security
+
+Radar drží osobní údaje kontaktů a obchodní data — zabezpečení roste s tím, kde běží:
+
+**Teď (prototyp, běží lokálně):**
+- Databáze i API klíče zůstávají na jednom stroji; `data/radar.db` je v `.gitignore`,
+  tokeny se čtou výhradně z env proměnných — nikdy je nedávat do kódu ani do gitu.
+- Zapnutí přihlášení: `export RADAR_PASSWORD=silné-heslo` (uživatel `RADAR_USER`,
+  výchozí „mediaboard") — celá aplikace pak vyžaduje HTTP Basic login.
+
+**Až se bude hostovat (F4):**
+1. **HTTPS vždy** — provozovat jen za reverse proxy s TLS (Caddy/nginx, nebo
+   platforma typu Fly.io/Railway, která TLS řeší sama).
+2. **Přihlášení přes firemní Google** — místo Basic auth dát aplikaci za
+   Cloudflare Access nebo Google Identity-Aware Proxy: nulový kód, MFA zdarma,
+   přístup jen pro @mediaboard.com účty a centrální odebrání přístupu.
+3. **Tokeny do secret manageru** hostingu (ne do souborů na disku).
+4. **Postgres místo SQLite** s vlastním DB uživatelem a zálohami.
+5. **Audit log** — kdo se přihlásil a kdy (řeší Cloudflare Access samo).
+6. **Rate limit a timeouty** na API, ať náhodný sken internetu nic nevytáhne.
+
+Zásada: aplikace nikdy nesmí být na veřejné adrese bez bodů 1+2.
+
 ## GDPR poznámka
 
 Jde o B2B prospecting na pracovní kontakty — opíráme se o oprávněný zájem, ale:
