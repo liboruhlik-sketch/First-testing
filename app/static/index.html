@@ -161,6 +161,7 @@ footer{margin-top:26px;color:var(--ink-3);font-size:12.5px}
     <thead id="thead"></thead>
     <tbody id="tbody"></tbody>
   </table></div>
+  <button class="chip" id="more" hidden style="margin:12px auto;display:block"></button>
 
   <footer>Skóre 0–100 = ICP fit + dosažitelnost + teplota vztahu. Atribuce „kudy na ně" je pravidlová — detail po kliknutí na řádek. Tabulka je řazená podle skóre.</footer>
 </div>
@@ -179,7 +180,8 @@ const STATUS = {
   market:{label:'Nepokrytý trh'},
 };
 const ORDER = ['customer','prospect','lost','market'];
-const state = {tab:'people', status:'', country:'', segment:'', q:'', data:null};
+const PAGE = 150;
+const state = {tab:'people', status:'', country:'', segment:'', q:'', data:null, shown:PAGE};
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -193,22 +195,36 @@ async function load(){
     $('badge').classList.add('live');
   }catch(e){
     state.data = JSON.parse($('snapshot').textContent);
-    $('badge').textContent = state.data ? 'demo snapshot' : 'bez dat';
+    $('badge').textContent = state.data ? (state.data.meta?.label || 'demo snapshot') : 'bez dat';
   }
   if(!state.data){ $('count').textContent = 'Žádná data — spusť python -m app.demo_seed a obnov stránku.'; return; }
+  const byId = new Map(state.data.companies.map(c => [c.id, c]));
+  for(const p of state.data.people){
+    const c = byId.get(p.company_id);
+    if(c && !p.company_name){
+      p.company_name = c.name; p.company_domain = c.domain; p.company_segment = c.segment;
+      p.company_country = c.country; p.company_status = c.status;
+    }
+  }
   buildFilters(); renderSummary(); renderTable();
 }
+function resetAndRender(){ state.shown = PAGE; renderTable(); }
 
 function buildFilters(){
   const chips = [['', 'Vše'], ...ORDER.map(k => [k, STATUS[k].label])];
   $('chips').innerHTML = chips.map(([v,l]) =>
     `<button class="chip${v===state.status?' on':''}" data-v="${v}">${l}</button>`).join('');
   $('chips').querySelectorAll('.chip').forEach(b => b.onclick = () => {
-    state.status = b.dataset.v; buildFilters(); renderTable();
+    state.status = b.dataset.v; buildFilters(); resetAndRender();
   });
   const rows = state.data.companies;
-  fillSelect('country', [...new Set(rows.map(c => c.country).filter(Boolean))].sort());
-  fillSelect('segment', [...new Set(rows.map(c => c.segment).filter(Boolean))].sort());
+  const top = (key, max) => {
+    const freq = new Map();
+    rows.forEach(c => c[key] && freq.set(c[key], (freq.get(c[key])||0)+1));
+    return [...freq.entries()].sort((a,b) => b[1]-a[1]).slice(0, max).map(([v]) => v).sort();
+  };
+  fillSelect('country', top('country', 40));
+  fillSelect('segment', top('segment', 40));
 }
 function fillSelect(id, values){
   const sel = $(id), current = state[id];
@@ -254,8 +270,14 @@ const companyChannels = r => `<div class="chset">${chan(r.domain,'web')+chan(r.l
 
 function renderTable(){
   const isPerson = state.tab === 'people';
-  const rows = (isPerson ? state.data.people : state.data.companies).filter(r => matches(r, isPerson));
-  $('count').textContent = `${rows.length} ${isPerson?'lidí':'firem'}${state.status?` · ${STATUS[state.status].label.toLowerCase()}`:''}, řazeno podle skóre`;
+  const all = (isPerson ? state.data.people : state.data.companies).filter(r => matches(r, isPerson));
+  const rows = all.slice(0, state.shown);
+  const slice = state.data.meta?.slice;
+  const sliceNote = slice ? ` · online výběr z ${(isPerson ? slice.people_total : slice.companies_total).toLocaleString('cs')} celkem` : '';
+  $('count').textContent = `${all.length.toLocaleString('cs')} ${isPerson?'lidí':'firem'}${state.status?` · ${STATUS[state.status].label.toLowerCase()}`:''}, řazeno podle skóre${sliceNote}`;
+  const more = $('more');
+  more.hidden = all.length <= state.shown;
+  if(!more.hidden) more.textContent = `Zobrazit dalších ${Math.min(300, all.length - state.shown).toLocaleString('cs')} (zobrazeno ${rows.length.toLocaleString('cs')} z ${all.length.toLocaleString('cs')})`;
   $('thead').innerHTML = isPerson
     ? '<tr><th>Jméno</th><th>Firma</th><th>Status</th><th>Skóre</th><th>Kontakty</th><th>Kudy na ně</th><th>Zdroje</th></tr>'
     : '<tr><th>Firma</th><th>Země</th><th>Segment</th><th>Status</th><th>Skóre</th><th>Kontakty</th><th>Kudy na ně</th><th>Zdroje</th></tr>';
@@ -315,11 +337,12 @@ document.addEventListener('keydown', e => { if(e.key==='Escape') closeDetail(); 
 $('tabs').querySelectorAll('button').forEach(b => b.onclick = () => {
   state.tab = b.dataset.tab;
   $('tabs').querySelectorAll('button').forEach(x => x.classList.toggle('on', x===b));
-  renderTable();
+  resetAndRender();
 });
-$('country').onchange = e => { state.country = e.target.value; renderTable(); };
-$('segment').onchange = e => { state.segment = e.target.value; renderTable(); };
-$('q').oninput = e => { state.q = e.target.value; renderTable(); };
+$('country').onchange = e => { state.country = e.target.value; resetAndRender(); };
+$('segment').onchange = e => { state.segment = e.target.value; resetAndRender(); };
+$('q').oninput = e => { state.q = e.target.value; resetAndRender(); };
+$('more').onclick = () => { state.shown += 300; renderTable(); };
 
 load();
 </script>
