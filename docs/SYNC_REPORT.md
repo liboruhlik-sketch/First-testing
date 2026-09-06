@@ -1,92 +1,112 @@
-# Report z ostrého testu tokenů a Pipedrive syncu
+# Report: statusy podle Mediaboard pipeline
 
-Datum: 2026-09-05 · Větev: `claude/pipedriveova-trzni-prehled-eyzgoc`
+Datum: 2026-09-06 · Větev: `claude/pipedriveova-trzni-prehled-eyzgoc`
 
-## 1. Přítomnost proměnných prostředí
-
-| Proměnná | Stav |
-|---|---|
-| `PIPEDRIVE_API_TOKEN` | přítomna |
-| `MERK_API_TOKEN` | přítomna |
-| `LEMLIST_API_KEY` | přítomna |
-
-## 2. Pipedrive sync
-
-První běh `python -m app.sync_pipedrive` spadl na `sqlite3.IntegrityError: NOT NULL constraint failed: companies.name_norm`. Příčina: jedna organizace s čistě arabským názvem — `normalize_name()` po odstranění diakritiky a ne-ASCII znaků vrátila prázdný řetězec, `insert_row()` prázdné hodnoty zahazuje a NOT NULL sloupec `name_norm` zůstal nevyplněný.
-
-**Oprava** (`app/matching.py`, minimální): když ASCII normalizace vrátí prázdno, `normalize_name()` nově použije jako fallback lowercase původního (ořezaného) názvu. Nelatinkové názvy tak dostanou stabilní normalizační klíč.
-
-Druhý běh doběhl čistě:
+Ostrý sync z Pipedrive (API v2) doběhl čistě:
 
 ```
 Hotovo: 86814 organizací, 111473 kontaktů, 57590 dealů.
 ```
 
-V databázi je po deduplikaci (párování podle domény/názvu) 83 271 firem.
+Po deduplikaci je v `data/radar.db` 83 271 firem. Endpoint `/api/v2/pipelines` vrací očekávaný tvar (`data: [{id, name, …}]`), takže `app/sync_pipedrive.py` nebylo potřeba upravovat — **všech 57 590 dealů má vyplněný název pipeline** (kontrola: `filled = 57 590 / 57 590`).
 
-## 3. Data v data/radar.db
+## 1. Přehled pipeline (unikátní názvy + počty dealů)
 
-### Firmy podle statusu
+MB pipeline jsou v tabulce tučně. Pozor: názvy nezačínají doslova na „MB" — mají prefix vlajkového emoji (viz Poznámky).
 
-| Status | Počet |
+| Pipeline | Dealů |
 |---|---:|
-| prospect | 61 724 |
-| lost | 16 364 |
-| customer | 5 183 |
+| **🇨🇿 MB CZ - New clients** | 12 900 |
+| Leadgen | 10 252 |
+| Imper CZ | 7 025 |
+| Retence | 6 662 |
+| **🇨🇿 MB CZ - Retention** | 3 706 |
+| Partneri | 3 047 |
+| IMPER_Up-sell/Cross- sell | 2 364 |
+| Registrations Mediaboard Global | 2 093 |
+| **🇵🇱 MB PL - New clients** | 1 897 |
+| Imper SK | 1 114 |
+| **🇸🇰 MB SK - Retention** | 1 050 |
+| **🇸🇮 MB SLO - New clients** | 791 |
+| **🇸🇰 MB SK - New clients** | 785 |
+| **🇭🇷 MB HR - New clients** | 780 |
+| Spoluprace | 711 |
+| **🇵🇱 MB PL - Retention** | 605 |
+| Mediaboard Global | 554 |
+| **MB_upsell_CZ** | 347 |
+| Vydavatelé | 337 |
+| Registrace Imper SK | 248 |
+| **🇭🇷 MB HR - Retention** | 178 |
+| **MB Data & MMOs** | 76 |
+| SLPV_dočasná | 51 |
+| Sales process 2.0 | 13 |
+| Pipeline | 3 |
+| BDR + Mediaboard CZ | 1 |
 
-### Lidé podle statusu
+Celkem 26 pipeline; jako Mediaboard („MB …") se počítá 11 z nich s **23 115 dealy** (40 % všech dealů). Zbytek jsou pipeline Imperu a sdílené procesní pipeline.
 
-| Status | Počet |
-|---|---:|
-| prospect | 56 374 |
-| lost | 22 101 |
-| customer | 21 506 |
+## 2. Statusy firem a lidí
 
-### Dealy podle statusu
-
-| Status | Počet |
-|---|---:|
-| lost | 34 692 |
-| won | 17 929 |
-| open | 4 969 |
-
-### Top 10 lidí podle score
-
-| Jméno | Pozice | Firma | Status | Score | Approach |
-|---|---|---|---|---:|---|
-| Miroslav Dinga | Managing Partner | DDeM, s.r.o. | customer | 95 | Péče & upsell |
-| Pavel Mojžíš | Výkonný ředitel | SVĚT V BEZPEČÍ s.r.o. | customer | 95 | Péče & upsell |
-| Žaneta Dlouhá | tisková mluvčí a specialistka komunikace | ELTODO OSVĚTLENÍ, s.r.o. | customer | 95 | Péče & upsell |
-| Jan Vavřík | Head of PR | NERUDA PRODUCTION s.r.o. | customer | 95 | Péče & upsell |
-| Berenika Alexandre | Head of Communications | Karel Janeček | customer | 95 | Péče & upsell |
-| Gabriela Semová | Head of Corporate and Internal PR | FTV Prima, spol. s r.o. | customer | 95 | Péče & upsell |
-| Dominika Janik | Senior Account Executive | FLEISHMAN-HILLARD Sp. z o.o. | customer | 95 | Péče & upsell |
-| Lucie Gottwaldová | Head of Customer Experience | TV Nova s.r.o. | customer | 95 | Péče & upsell |
-| Matylda Pietrykowska | Junior Account Executive | PR HUB Sp. z o.o. | customer | 95 | Péče & upsell |
-| Nikola Vangeli | Marketingový ředitel | MAFRA, a.s. | customer | 95 | Péče & upsell |
-
-### Vyplněnost custom fieldů (kontrola mapování `DEFAULT_ORG_FIELDS`)
-
-| Pole | Vyplněno | Podíl |
+| Status | Firmy | Lidé |
 |---|---:|---:|
-| ico | 79 558 / 83 271 | 96 % |
-| domain | 55 427 / 83 271 | 67 % |
-| segment | 69 240 / 83 271 | 83 % |
-| employees | 52 430 / 83 271 | 63 % |
+| market | 72 692 | 48 555 |
+| lost | 6 847 | 16 015 |
+| customer | 2 393 | 11 100 |
+| prospect | 1 339 | 24 311 |
+| **celkem** | **83 271** | **99 981** |
 
-Mapování custom fieldů funguje — `cf()` nebylo potřeba upravovat.
+Logika: firma s dealem v MB Retention pipeline (otevřeným, nebo posledním vyhraným) = `customer`; poslední prohraný retention = `lost`; otevřený MB deal mimo retention = `prospect`; firma bez jakéhokoli MB dealu = `market` (nepokrytý trh — sdílené CRM s Imperem). Lidé dědí status své firmy.
 
-## 4. Merk API
+## 3. Top zákazníci (customer firmy podle score)
 
-- `Authorization: Token <MERK_API_TOKEN>` header → **200** (na `/company/?regno=…&country_code=cz` i na kořeni API).
-- Token jako query parametr (`?token=…`) → 401.
+Firem se statusem **customer je 2 393**. Prvních 15 podle score (všechny sdílejí maximum 85, řazeno abecedně; sloupec země je prázdný — viz Poznámky):
 
-Tvar odpovědi (jedna řádka): JSON pole s 1 položkou (záznam firmy); klíče položky mj. `address`, `bank_accounts`, `categories`, `company_index`, `court`, `databox_ids`, `emails`, `regno`, …
+| Firma | Země | Segment | Score |
+|---|---|---|---:|
+| "GREENPEACE Slovensko" | — | Činnosti ostatných členských organizácií | 85 |
+| ABB, s.r.o. | — | Inštalácia priemyselných strojov a prístrojov | 85 |
+| ABS Jets, a.s. | — | Mezinárodní nepravidelná letecká osobní doprava | 85 |
+| AC & C, Public Relations, s.r.o. | — | Vydávání knih, periodických publikací a ostatní vydavatelské činnosti | 85 |
+| ADRA, o.p.s. | — | Ostatní ambulantní nebo terénní sociální služby j. n. | 85 |
+| AKCENTA CZ a.s. | — | Obchodování s cennými papíry na vlastní účet | 85 |
+| ALENSA, s.r.o. | — | Ostatní maloobchod s novým zbožím ve specializovaných prodejnách | 85 |
+| AMI Communications Group SE | — | Pronájem a správa vlastních nebo pronajatých nemovitostí | 85 |
+| AVANT investiční společnost, a.s. | — | Činnosti trustů, fondů a podobných finančních subjektů | 85 |
+| Agentura pro podporu podnikání a investic CzechInvest | — | Ostatní poradenství v oblasti podnikání a řízení | 85 |
+| Air Bank a.s. | — | Ostatní peněžní zprostředkování | 85 |
+| Albatros Media a.s. | — | Vydávání knih | 85 |
+| Algotech, a.s. | — | Činnosti v oblasti informačních technologií | 85 |
+| Amundi Czech Republic, investiční společnost, a.s. | — | Správa fondů | 85 |
+| Armáda spásy - misijní | — | Činnosti náboženských organizací | 85 |
 
-## 5. Lemlist API
+## 4. Top nepokrytí lidé (status market podle score)
 
-`curl -u ":<LEMLIST_API_KEY>" https://api.lemlist.com/api/team` → **200**.
+Nejzajímavější kontakty, na které se z pohledu Mediaboardu zatím nesahá (jejich firma nemá žádný MB deal):
 
-## Shrnutí
+| Jméno | Pozice | Firma | Score | Approach |
+|---|---|---|---:|---|
+| Amine Kecha | Head of Intelligence & Offensive Security | Devoteam | 75 | E-mail sekvence (lemlist) |
+| Agnes Dancs | CEO Assistant | Nitrogenmuvek Zrt. | 60 | E-mail sekvence (lemlist) |
+| Andras R Nagy | managing director | PRBK Communications | 60 | E-mail sekvence (lemlist) |
+| Anne Gayat | Co CEO | EsterLaw | 60 | E-mail sekvence (lemlist) |
+| Anthony Lam | Head of Account Management | Orbit Dot Limited | 60 | E-mail sekvence (lemlist) |
+| Beata Móriová | Head of Marketing Nivy Mall and PR Manager | Stanica Nivy s. r. o. | 60 | E-mail sekvence (lemlist) |
+| Bogdan Berceanu | CEO | Editia de Timis | 60 | E-mail sekvence (lemlist) |
+| Catalina Ionescu | CEO | InteliPR SRL | 60 | E-mail sekvence (lemlist) |
+| Cristopher Ugarte | CEO | Puente OS | 60 | E-mail sekvence (lemlist) |
+| Damian Juszczyk | Founder & CEO | EXECUTIVE PR Damian Juszczyk | 60 | E-mail sekvence (lemlist) |
+| Diego Lorenzo | Ceo | Xngroup | 60 | E-mail sekvence (lemlist) |
+| Doreen Faith Motshegwa | Chief Public Relations Officer | Government Communication | 60 | E-mail sekvence (lemlist) |
+| Heiko Loy | Head of PR | PEARL GmbH | 60 | E-mail sekvence (lemlist) |
+| Jan Ursíny | Director Czech Republic | Switzerland Tourism | 60 | E-mail sekvence (lemlist) |
+| John Smith | CEO | The Testing LTD | 60 | E-mail sekvence (lemlist) |
 
-Všechny tři tokeny fungují. Pipedrive sync běží po jednořádkové opravě `normalize_name()`; databáze je naplněná a mapování custom fieldů je v pořádku. Merk vyžaduje auth přes header `Authorization: Token …`, Lemlist přes HTTP Basic (prázdný user, klíč jako heslo).
+Všichni mají decision-maker pozici a ověřený e-mail, proto approach „E-mail sekvence (lemlist)". Mnoho z nich je mimo CZ/SK (HU, PL, RO, DE, …) — CRM obsahuje i globální leady.
+
+## 5. Poznámky k opravám a limitům
+
+1. **Oprava detekce MB pipeline** (`app/scoring.py`, commit „Detekce MB pipeline i s vlajkovým emoji prefixem"): pipeline se nejmenují doslova „MB …", ale „🇨🇿 MB CZ - Retention" apod. Původní `startswith("MB")` chytal jen `MB_upsell_CZ` a `MB Data & MMOs` (výsledkem bylo jen 187 zákazníků). Nová detekce před testem prefixu odstraní úvodní ne-písmenné znaky (emoji, mezery); po opravě a přepočtu je zákazníků 2 393.
+2. **`app/sync_pipedrive.py` beze změny** — `/api/v2/pipelines` vrací standardní v2 tvar, mapování `pipeline_id → name` funguje a pipeline je vyplněná u 100 % dealů.
+3. **Pipeline „Mediaboard Global" a „Registrations Mediaboard Global"** (554 + 2 093 dealů) konvenci „MB …" nesplňují, a proto se do statusů **nepočítají**. Pokud jde o skutečné Mediaboard pipeline, je potřeba je do detekce doplnit (nebo je v Pipedrivu přejmenovat) — počty prospect/customer by pak narostly.
+4. **Země u firem prakticky chybí**: vyplněná jen u 46 z 83 271 firem — adresní pole `address.country` se v Pipedrivu skoro nepoužívá. Proto je sloupec Země v top zákaznících prázdný; do budoucna lze zemi odvozovat z měny dealu nebo MB pipeline (CZ/SK/PL/SLO/HR).
+5. Mezi top „market" lidmi jsou i zjevně testovací záznamy (např. „John Smith / The Testing LTD") — CRM by zasloužilo úklid.
