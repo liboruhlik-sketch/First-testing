@@ -4,6 +4,7 @@ Verze 1 je záměrně pravidlová a čitelná — obchodník musí rozumět, pro
 někdo nahoře. Viz docs/NAVRH.md, sekce Skóre priority.
 """
 
+import re
 from datetime import datetime, timedelta
 
 DECISION_WORDS = ("ředitel", "director", "head", "chief", "cco", "ceo", "vp", "managing", "partner", "mluvčí", "spokesperson")
@@ -25,6 +26,11 @@ def seniority(title: str) -> str:
     return "junior"
 
 
+def _is_mb_pipeline(name: str | None) -> bool:
+    """Mediaboard pipeline: název začíná „MB" — často až po vlajkovém emoji („🇨🇿 MB CZ - Retention")."""
+    return re.sub(r"^[^A-Za-z]+", "", name or "").upper().startswith("MB")
+
+
 def company_status(deals: list[dict]) -> str:
     """Status firmy podle Mediaboard („MB …") pipeline v Pipedrivu.
 
@@ -32,7 +38,7 @@ def company_status(deals: list[dict]) -> str:
     retention deal = zákazník, poslední prohraný = churn. Firma bez jakéhokoli
     MB dealu je z pohledu Mediaboardu nepokrytý trh (sdílené CRM s Imperem).
     """
-    mb = [d for d in deals if (d.get("pipeline") or "").upper().startswith("MB")]
+    mb = [d for d in deals if _is_mb_pipeline(d.get("pipeline"))]
     if not mb:
         return "market"
     retention = [d for d in mb if "retention" in (d.get("pipeline") or "").lower()]
