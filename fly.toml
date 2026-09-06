@@ -1,0 +1,14 @@
+# Konfigurace pro Fly.io — viz docs/DEPLOY.md
+app = "mediaboard-market-radar"
+primary_region = "fra"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+[mounts]
+  source = "radar_data"
+  destination = "/data"
