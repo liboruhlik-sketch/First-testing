@@ -51,7 +51,10 @@ PIPELINE_COUNTRY = {"CZ": "Česko", "SK": "Slovensko", "PL": "Polsko",
 def country_from_deals(deals: list[dict]) -> str | None:
     """Země (trh) odvozená z MB pipeline dealů — Pipedrive adresy skoro nemá."""
     for deal in deals:
-        m = re.search(r"\bMB[ _]?(CZ|SK|PL|SLO|HR|SR)\b", deal.get("pipeline") or "", re.IGNORECASE)
+        pipeline = deal.get("pipeline") or ""
+        m = re.search(r"\bMB[ _]?(CZ|SK|PL|SLO|HR|SR)\b", pipeline, re.IGNORECASE)
+        if not m and _is_mb_pipeline(pipeline):  # např. „MB_upsell_CZ"
+            m = re.search(r"[ _-](CZ|SK|PL|SLO|HR|SR)\s*$", pipeline, re.IGNORECASE)
         if m:
             return PIPELINE_COUNTRY[m.group(1).upper()]
     return None
