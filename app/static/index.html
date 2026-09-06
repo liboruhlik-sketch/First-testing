@@ -125,6 +125,10 @@ tbody tr:last-child td{border-bottom:0}
 .playbook .lbl{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
 .playbook b{display:block;font-size:16px;margin:3px 0 2px}
 .playbook p{margin:0;color:var(--ink-2);font-size:13.5px}
+.pdlink{display:inline-block;margin-top:14px;font-weight:600;color:var(--accent);text-decoration:none}
+.pdlink:hover{text-decoration:underline}
+.kv a{color:var(--accent);text-decoration:none}
+.kv a:hover{text-decoration:underline}
 footer{margin-top:26px;color:var(--ink-3);font-size:12.5px}
 @media (max-width:820px){.kpis{grid-template-columns:repeat(2,1fr)}}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
@@ -319,6 +323,17 @@ function openDetail(r, isPerson){
   kv.push(['Zdroje', (r.sources||'').split(',').join(', ')]);
   if(deals.length) kv.push(['Dealy', deals.map(d =>
     `${d.title} — ${({open:'běží',won:'vyhraný',lost:'ztracený'})[d.status]||d.status}${d.value?` (${Number(d.value).toLocaleString('cs')} ${d.currency||''})`:''}`).join(' · ')]);
+  const LINKS = {
+    'E-mail': v => `mailto:${v}`,
+    'LinkedIn': v => v.startsWith('http') ? v : 'https://' + v,
+    'Web firmy': v => v.startsWith('http') ? v : 'https://' + v,
+    'Doména': v => v.startsWith('http') ? v : 'https://' + v,
+  };
+  const val = (k, v) => LINKS[k] ? `<a href="${esc(LINKS[k](String(v)))}" target="_blank" rel="noopener">${esc(v)}</a>` : esc(v);
+  const pdBase = state.data.meta?.pipedrive_base || 'https://app.pipedrive.com';
+  const pdId = isPerson ? r.pipedrive_person_id : r.pipedrive_org_id;
+  const pdLink = pdId ? `<a class="pdlink" target="_blank" rel="noopener"
+    href="${pdBase}/${isPerson?'person':'organization'}/${pdId}">Otevřít v Pipedrivu ↗</a>` : '';
   $('panel').innerHTML = `
     <button class="close" id="close" aria-label="Zavřít">✕</button>
     <div>${pill(r.status)}</div>
@@ -326,7 +341,8 @@ function openDetail(r, isPerson){
     <div class="mut">${esc(isPerson ? (r.title||'') : (r.segment||''))}</div>
     <div class="playbook"><div class="lbl">Kudy na ně · skóre ${r.score}/100</div>
       <b>${esc(r.approach||'')}</b><p>${esc(r.approach_reason||'')}</p></div>
-    <dl class="kv">${kv.filter(([,v])=>v!==null&&v!==undefined&&v!=='').map(([k,v])=>`<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>`;
+    ${pdLink}
+    <dl class="kv">${kv.filter(([,v])=>v!==null&&v!==undefined&&v!=='').map(([k,v])=>`<dt>${k}</dt><dd>${val(k, v)}</dd>`).join('')}</dl>`;
   $('drawer').classList.add('open');
   $('close').onclick = closeDetail;
 }

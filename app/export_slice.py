@@ -25,10 +25,10 @@ RELEVANT_SEGMENT = re.compile(
 
 COMPANY_FIELDS = ("id", "name", "domain", "ico", "country", "city", "segment",
                   "employees", "linkedin_url", "monitoring_tool", "status",
-                  "sources", "score", "approach", "approach_reason")
+                  "sources", "score", "approach", "approach_reason", "pipedrive_org_id")
 PERSON_FIELDS = ("id", "company_id", "full_name", "title", "email", "phone",
                  "linkedin_url", "country", "status", "sources", "score",
-                 "approach", "approach_reason")
+                 "approach", "approach_reason", "pipedrive_person_id")
 
 
 def slim(row, fields):

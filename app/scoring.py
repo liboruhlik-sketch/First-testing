@@ -4,17 +4,57 @@ Verze 1 je záměrně pravidlová a čitelná — obchodník musí rozumět, pro
 někdo nahoře. Viz docs/NAVRH.md, sekce Skóre priority.
 """
 
+import json
+import os
 import re
 from datetime import datetime, timedelta
+from pathlib import Path
+
+from .icp_profile import size_bucket
 
 DECISION_WORDS = ("ředitel", "director", "head", "chief", "cco", "ceo", "vp", "managing", "partner", "mluvčí", "spokesperson")
 MID_WORDS = ("manager", "manažer", "lead", "senior")
 
+# Fallback, dokud neexistují váhy odvozené ze zákazníků (python -m app.icp_profile).
 SEGMENT_FIT = {
     "PR agentura": 30,
     "In-house komunikace": 25,
     "Public affairs": 20,
 }
+
+_ICP: dict | None = None
+
+
+def icp_weights() -> dict:
+    global _ICP
+    if _ICP is None:
+        path = Path(os.environ.get("ICP_WEIGHTS", "data/icp_weights.json"))
+        _ICP = json.loads(path.read_text()) if path.exists() else {}
+    return _ICP
+
+
+def company_fit(company: dict) -> int:
+    """ICP fit firmy — z vah odvozených ze zákazníků, jinak fallback tabulka."""
+    weights = icp_weights()
+    if weights.get("segments"):
+        fit = weights["segments"].get(company.get("segment"), 0)
+        fit += weights.get("size_buckets", {}).get(size_bucket(company.get("employees")), 0)
+        fit += weights.get("countries", {}).get(company.get("country"), 0)
+        return min(fit, 40) or 5
+    return SEGMENT_FIT.get(company.get("segment"), 10)
+
+
+PIPELINE_COUNTRY = {"CZ": "Česko", "SK": "Slovensko", "PL": "Polsko",
+                    "SLO": "Slovinsko", "HR": "Chorvatsko", "SR": "Srbsko"}
+
+
+def country_from_deals(deals: list[dict]) -> str | None:
+    """Země (trh) odvozená z MB pipeline dealů — Pipedrive adresy skoro nemá."""
+    for deal in deals:
+        m = re.search(r"\bMB[ _]?(CZ|SK|PL|SLO|HR|SR)\b", deal.get("pipeline") or "", re.IGNORECASE)
+        if m:
+            return PIPELINE_COUNTRY[m.group(1).upper()]
+    return None
 
 
 def seniority(title: str) -> str:
@@ -69,7 +109,11 @@ def score_person(person: dict, company: dict, company_deals: list[dict]) -> tupl
     """Vrací (skóre, atribuce, důvod). Pravidla shora, první vyhovující vyhrává."""
     level = seniority(person.get("title"))
     score = {"decision": 30, "mid": 20, "junior": 10}[level]
-    score += SEGMENT_FIT.get(company.get("segment"), 10)
+    score += company_fit(company)
+    tokens = icp_weights().get("title_tokens", {})
+    if tokens:
+        title_lower = (person.get("title") or "").lower()
+        score += max((w for tok, w in tokens.items() if tok in title_lower), default=0)
     if person.get("email"):
         score += 15
     if person.get("linkedin_url"):
@@ -114,7 +158,7 @@ def score_person(person: dict, company: dict, company_deals: list[dict]) -> tupl
 
 
 def score_company(company: dict, deals: list[dict], people_count: int) -> tuple[int, str, str]:
-    score = SEGMENT_FIT.get(company.get("segment"), 10)
+    score = company_fit(company)
     if (company.get("employees") or 0) >= 5:
         score += 10
     if company.get("domain"):
@@ -156,13 +200,15 @@ def recompute_all(conn):
         deals = deals_by_company.get(cid, [])
         if company.get("pipedrive_org_id"):
             company["status"] = company_status(deals)
+        if not company.get("country"):
+            company["country"] = country_from_deals(deals)
         people_count = conn.execute(
             "SELECT COUNT(*) c FROM people WHERE company_id=?", (cid,)
         ).fetchone()["c"]
         score, approach, reason = score_company(company, deals, people_count)
         conn.execute(
-            "UPDATE companies SET status=?, score=?, approach=?, approach_reason=? WHERE id=?",
-            (company["status"], score, approach, reason, cid),
+            "UPDATE companies SET status=?, country=?, score=?, approach=?, approach_reason=? WHERE id=?",
+            (company["status"], company.get("country"), score, approach, reason, cid),
         )
 
     for row in conn.execute("SELECT * FROM people"):
