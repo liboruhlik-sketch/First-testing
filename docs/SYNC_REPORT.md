@@ -110,3 +110,18 @@ Všichni mají decision-maker pozici a ověřený e-mail, proto approach „E-ma
 3. **Pipeline „Mediaboard Global" a „Registrations Mediaboard Global"** (554 + 2 093 dealů) konvenci „MB …" nesplňují, a proto se do statusů **nepočítají**. Pokud jde o skutečné Mediaboard pipeline, je potřeba je do detekce doplnit (nebo je v Pipedrivu přejmenovat) — počty prospect/customer by pak narostly.
 4. **Země u firem prakticky chybí**: vyplněná jen u 46 z 83 271 firem — adresní pole `address.country` se v Pipedrivu skoro nepoužívá. Proto je sloupec Země v top zákaznících prázdný; do budoucna lze zemi odvozovat z měny dealu nebo MB pipeline (CZ/SK/PL/SLO/HR).
 5. Mezi top „market" lidmi jsou i zjevně testovací záznamy (např. „John Smith / The Testing LTD") — CRM by zasloužilo úklid.
+
+## Export pro online dashboard
+
+**Datum:** 6. 9. 2026
+
+Ostrý sync z Pipedrivu a export kurátorovaného výběru pro online dashboard (`data/export/radar_slice.json`).
+
+**Sync (zdroj, plná databáze `data/radar.db`, necommituje se):**
+- 86 814 organizací, 111 473 kontaktů, 57 590 dealů z Pipedrivu.
+- Po zpracování: 83 271 firem (2 393 customer / 1 339 prospect / 6 847 lost / 72 692 market) a 99 981 lidí (11 100 / 24 311 / 16 015 / 48 555).
+
+**Export (`radar_slice.json`, commitnutý ve větvi):**
+- 14 442 firem a 23 500 lidí, velikost 11,8 MB (12 584 872 B by původní limit 15k/25k překročil 12 MB, proto limity výběru sníženy na 14 000 firem / 23 500 lidí v `app/export_slice.py`).
+- Výběr: všechny firmy se vztahem (customer/prospect/lost), z nepokrytého trhu nejdřív relevantní obory (PR/komunikace/média) a pak nejvyšší skóre; top lidé podle skóre + firmy zmíněných lidí.
+- Ověřeno: validní JSON, `meta.slice` = {companies: 14442, companies_total: 83271, people: 23500, people_total: 99981}.
