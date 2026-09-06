@@ -71,12 +71,16 @@ Pipedrive hodnota tržní hodnotou) a sjednotí `sources`.
 
 ## Statusová logika
 
+Počítají se jen dealy v Mediaboard pipeline (název začíná „MB", např. „MB CZ -
+New clients", „MB PL - Retention"); Retention pipeline drží stávající klienty.
+CRM je sdílené s Imper produkty, takže firma bez MB dealu je pro Mediaboard trh.
+
 | Status | Pravidlo |
 |---|---|
-| **Zákazník** | firma má won deal (a není označená churn) |
-| **Prospekt** | otevřený deal, nebo je v Pipedrivu bez dealu (jsme v kontaktu) |
-| **Ztracený** | pouze lost dealy |
-| **Nepokrytý trh** | známe jen z tržních zdrojů, v Pipedrivu není |
+| **Zákazník** | otevřený nebo poslední vyhraný deal v „MB … Retention", případně vyhraný deal v „MB … New clients" (čerstvý klient) |
+| **Prospekt** | otevřený deal v „MB … New clients" |
+| **Ztracený** | poslední retention deal prohraný (churn), nebo jen prohrané MB dealy |
+| **Nepokrytý trh** | žádný MB deal — firma známá jen z tržních zdrojů nebo z jiného (Imper) byznysu v CRM |
 
 Člověk dědí status firmy, pokud sám nemá vlastní záznam v Pipedrivu; člověk bez
 Pipedrive záznamu u zákaznické firmy je „nepokrytý" — to je **expanzní příležitost**.

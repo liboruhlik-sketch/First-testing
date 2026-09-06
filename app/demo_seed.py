@@ -53,15 +53,16 @@ PEOPLE = [
     ("Nina Ďurišová", "Head of Client Service", "danubemedia.sk", "nina@danubemedia.sk", None, "linkedin.com/in/ninadurisova", None, "lemlist"),
 ]
 
-# (pipedrive_deal_id, firma-doména, titul, status, hodnota, uzavřeno)
+# (pipedrive_deal_id, firma-doména, titul, pipeline, status, hodnota, uzavřeno)
 DEALS = [
-    (301, "bluenote.cz", "Mediaboard licence 2026", "won", 96000, "2026-01-15"),
-    (302, "vltavapr.cz", "Mediaboard licence 2025", "won", 54000, "2025-11-02"),
-    (303, "heliosenergy.cz", "Enterprise monitoring", "won", 180000, "2026-03-20"),
-    (304, "orbismedia.cz", "Nabídka pro Orbis", "open", 60000, None),
-    (305, "skylarkpr.sk", "Skylark trial → licence", "open", 42000, None),
-    (306, "nordwind.io", "Nordwind — pilot", "open", 75000, None),
-    (307, "granitca.cz", "Granit licence", "lost", 48000, "2026-02-10"),
+    (301, "bluenote.cz", "Mediaboard licence 2025", "MB CZ - New clients", "won", 96000, "2025-01-15"),
+    (308, "bluenote.cz", "Obnova 2026", "MB CZ - Retention", "open", 102000, None),
+    (302, "vltavapr.cz", "Obnova licence 2026", "MB CZ - Retention", "won", 54000, "2025-11-02"),
+    (303, "heliosenergy.cz", "Enterprise obnova", "MB CZ - Retention", "open", 180000, None),
+    (304, "orbismedia.cz", "Nabídka pro Orbis", "MB CZ - New clients", "open", 60000, None),
+    (305, "skylarkpr.sk", "Skylark trial → licence", "MB SK - New clients", "open", 42000, None),
+    (306, "nordwind.io", "Nordwind — pilot", "MB CZ - New clients", "open", 75000, None),
+    (307, "granitca.cz", "Granit licence", "MB CZ - New clients", "lost", 48000, "2026-02-10"),
 ]
 
 
@@ -94,11 +95,11 @@ def run() -> None:
             source=source,
         )
 
-    for pd_deal, domain, title, status, value, closed_at in DEALS:
+    for pd_deal, domain, title, pipeline, status, value, closed_at in DEALS:
         conn.execute(
-            "INSERT INTO deals (pipedrive_deal_id, company_id, title, status, value, currency, closed_at)"
-            " VALUES (?,?,?,?,?,?,?)",
-            (pd_deal, company_ids[domain], title, status, value, "CZK", closed_at),
+            "INSERT INTO deals (pipedrive_deal_id, company_id, title, pipeline, status, value, currency, closed_at)"
+            " VALUES (?,?,?,?,?,?,?,?)",
+            (pd_deal, company_ids[domain], title, pipeline, status, value, "CZK", closed_at),
         )
 
     recompute_all(conn)

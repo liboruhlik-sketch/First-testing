@@ -26,15 +26,27 @@ def seniority(title: str) -> str:
 
 
 def company_status(deals: list[dict]) -> str:
-    """Status firmy podle jejích dealů; firma v Pipedrivu bez dealu = prospekt."""
-    statuses = {d["status"] for d in deals}
-    if "won" in statuses:
-        return "customer"
-    if "open" in statuses:
+    """Status firmy podle Mediaboard („MB …") pipeline v Pipedrivu.
+
+    Retention pipeline drží stávající klienty: otevřený nebo poslední vyhraný
+    retention deal = zákazník, poslední prohraný = churn. Firma bez jakéhokoli
+    MB dealu je z pohledu Mediaboardu nepokrytý trh (sdílené CRM s Imperem).
+    """
+    mb = [d for d in deals if (d.get("pipeline") or "").upper().startswith("MB")]
+    if not mb:
+        return "market"
+    retention = [d for d in mb if "retention" in (d.get("pipeline") or "").lower()]
+    if retention:
+        if any(d["status"] == "open" for d in retention):
+            return "customer"
+        closed = sorted((d for d in retention if d.get("closed_at")), key=lambda d: d["closed_at"])
+        if closed:
+            return "customer" if closed[-1]["status"] == "won" else "lost"
+    if any(d["status"] == "open" for d in mb):
         return "prospect"
-    if "lost" in statuses:
-        return "lost"
-    return "prospect"  # je v CRM, jsme v kontaktu
+    if any(d["status"] == "won" for d in mb):
+        return "customer"
+    return "lost"
 
 
 def _recent(closed_at: str | None, months: int) -> bool:

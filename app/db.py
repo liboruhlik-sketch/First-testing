@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS deals (
     company_id INTEGER REFERENCES companies(id),
     person_id INTEGER REFERENCES people(id),
     title TEXT,
+    pipeline TEXT,            -- název Pipedrive pipeline (MB CZ - Retention, …)
     status TEXT,              -- open / won / lost
     value REAL,
     currency TEXT,
@@ -75,10 +76,14 @@ def connect() -> sqlite3.Connection:
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     conn.executescript(SCHEMA)
-    try:  # migrace starších databází
-        conn.execute("ALTER TABLE companies ADD COLUMN ico TEXT")
-    except sqlite3.OperationalError:
-        pass
+    for migration in (  # migrace starších databází
+        "ALTER TABLE companies ADD COLUMN ico TEXT",
+        "ALTER TABLE deals ADD COLUMN pipeline TEXT",
+    ):
+        try:
+            conn.execute(migration)
+        except sqlite3.OperationalError:
+            pass
     return conn
 
 

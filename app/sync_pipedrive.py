@@ -112,18 +112,22 @@ def run() -> None:
                 source="pipedrive",
             )
 
+        pipelines = {p["id"]: p.get("name") for p in fetch_all(client, "pipelines")}
+
         deal_count = 0
         for deal in fetch_all(client, "deals"):
             conn.execute(
-                """INSERT INTO deals (pipedrive_deal_id, company_id, person_id, title, status, value, currency, closed_at)
-                   VALUES (?,?,?,?,?,?,?,?)
+                """INSERT INTO deals (pipedrive_deal_id, company_id, person_id, title, pipeline, status, value, currency, closed_at)
+                   VALUES (?,?,?,?,?,?,?,?,?)
                    ON CONFLICT(pipedrive_deal_id) DO UPDATE SET
-                     status=excluded.status, value=excluded.value, closed_at=excluded.closed_at""",
+                     pipeline=excluded.pipeline, status=excluded.status,
+                     value=excluded.value, closed_at=excluded.closed_at""",
                 (
                     deal["id"],
                     org_map.get(deal.get("org_id")),
                     person_map.get(deal.get("person_id")),
                     deal.get("title"),
+                    pipelines.get(deal.get("pipeline_id")),
                     deal.get("status"),
                     deal.get("value"),
                     deal.get("currency"),
