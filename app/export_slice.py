@@ -15,8 +15,8 @@ from pathlib import Path
 from .db import connect
 
 OUT = Path("data/export/radar_slice.json")
-MAX_COMPANIES = 15000
-MAX_PEOPLE = 25000
+MAX_COMPANIES = 14000
+MAX_PEOPLE = 23500
 
 RELEVANT_SEGMENT = re.compile(
     r"public relations|komunikac|komunikác|reklam|marketing|médi|medi[aá]|vydáv|vydav|tisk|publish|advertis|broadcast|rozhlas|televiz",
