@@ -1,0 +1,301 @@
+<title>Měření rychlosti v Praze</title>
+<style>
+:root{
+  --bg:#f5f6f8; --panel:#ffffff; --ink:#16202c; --muted:#5b6879; --line:#dde2e9;
+  --chipbg:#eef1f5; --accent:#12508f; --sel:#12508f;
+  --catA:#1a66c9; --catB:#c96a10; --catC:#0d8f7a; --catD:#cf2f3d;
+  --shadow:0 2px 10px rgba(22,32,44,.12); --mapfilter:none;
+}
+:root:not([data-theme="light"]){}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#141a22; --panel:#1c242f; --ink:#e8edf3; --muted:#93a0b1; --line:#303b49;
+    --chipbg:#26303d; --accent:#6fa8e0; --sel:#6fa8e0;
+    --catA:#5b96e8; --catB:#e0913c; --catC:#2fb89e; --catD:#e05b68;
+    --shadow:0 2px 12px rgba(0,0,0,.45); --mapfilter:brightness(.88) saturate(.95);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#141a22; --panel:#1c242f; --ink:#e8edf3; --muted:#93a0b1; --line:#303b49;
+  --chipbg:#26303d; --accent:#6fa8e0; --sel:#6fa8e0;
+  --catA:#5b96e8; --catB:#e0913c; --catC:#2fb89e; --catD:#e05b68;
+  --shadow:0 2px 12px rgba(0,0,0,.45); --mapfilter:brightness(.88) saturate(.95);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:14px/1.5 "Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;}
+#app{display:flex;flex-direction:column;height:100vh}
+header{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  padding:10px 16px 8px;border-bottom:1px solid var(--line);background:var(--panel)}
+header h1{margin:0;font:600 21px/1.15 "Barlow Semi Condensed","Barlow",sans-serif;letter-spacing:.01em}
+header .sub{color:var(--muted);font-size:12.5px}
+#filters{display:flex;gap:6px;flex-wrap:wrap;padding:8px 16px;background:var(--panel);
+  border-bottom:1px solid var(--line);align-items:center}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:4px 11px;border-radius:999px;
+  border:1px solid var(--line);background:var(--chipbg);cursor:pointer;font:500 12.5px/1.4 "Barlow",sans-serif;
+  color:var(--ink);user-select:none}
+.chip .dot{width:9px;height:9px;border-radius:50%;background:var(--c)}
+.chip .cnt{color:var(--muted);font-variant-numeric:tabular-nums}
+.chip[aria-pressed="false"]{opacity:.42}
+.chip:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+#search{margin-left:auto;padding:5px 10px;border:1px solid var(--line);border-radius:8px;
+  background:var(--bg);color:var(--ink);font:inherit;font-size:13px;width:210px;max-width:45vw}
+#main{flex:1;display:flex;min-height:0}
+#mapwrap{flex:1;position:relative;overflow:hidden;background:#dfe6ec;touch-action:none;cursor:grab}
+#mapwrap.drag{cursor:grabbing}
+#world{position:absolute;left:0;top:0;transform-origin:0 0;width:{W}px;height:{H}px}
+#world img.base{position:absolute;inset:0;width:100%;height:100%;filter:var(--mapfilter);pointer-events:none;-webkit-user-drag:none}
+.mk{position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  border:0;background:transparent;padding:0;transform:scale(var(--inv,1));}
+.mk i{width:13px;height:13px;border-radius:50%;background:var(--c);
+  border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.45);transition:width .1s,height .1s}
+.mk:hover i,.mk.sel i{width:17px;height:17px}
+.mk.sel i{border-color:#ffe45c;border-width:3px}
+.mk.dim{opacity:.14;pointer-events:none}
+#zoomctl{position:absolute;right:12px;top:12px;display:flex;flex-direction:column;gap:6px;z-index:5}
+#zoomctl button{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);
+  background:var(--panel);color:var(--ink);font-size:18px;cursor:pointer;box-shadow:var(--shadow)}
+#attrib{position:absolute;left:0;bottom:0;z-index:5;font-size:10px;color:#3c4653;
+  background:rgba(255,255,255,.72);padding:1px 6px;border-radius:0 4px 0 0}
+#pop{position:absolute;z-index:6;max-width:290px;background:var(--panel);color:var(--ink);
+  border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);padding:9px 12px;display:none}
+#pop .t{font:600 14.5px/1.25 "Barlow Semi Condensed",sans-serif;margin-bottom:2px;padding-right:16px}
+#pop .m{color:var(--muted);font-size:12px}
+#pop .c{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;margin-top:5px;
+  padding:2px 8px;border-radius:999px;background:var(--chipbg)}
+#pop .c .dot{width:8px;height:8px;border-radius:50%;background:var(--c)}
+#pop .x{position:absolute;right:6px;top:4px;border:0;background:none;color:var(--muted);
+  font-size:15px;cursor:pointer;padding:2px 5px}
+#side{width:330px;border-left:1px solid var(--line);background:var(--panel);
+  overflow-y:auto;flex-shrink:0}
+#side h2{font:600 12px/1.3 "Barlow",sans-serif;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);margin:0;padding:12px 14px 5px;position:sticky;top:0;background:var(--panel)}
+.row{display:flex;gap:9px;padding:7px 14px;cursor:pointer;border-bottom:1px solid var(--line);align-items:flex-start}
+.row:hover{background:var(--chipbg)}
+.row.sel{background:var(--chipbg);box-shadow:inset 3px 0 0 var(--sel)}
+.row .no{flex:none;margin-top:2px;width:26px;height:19px;border-radius:5px;background:var(--c);
+  color:#fff;font:600 11px/19px "Barlow",sans-serif;text-align:center;font-variant-numeric:tabular-nums}
+.row .tt{font-weight:600;font-size:13.5px;line-height:1.3}
+.row .dd{color:var(--muted);font-size:11.8px;line-height:1.35}
+footer{padding:7px 16px;border-top:1px solid var(--line);background:var(--panel);
+  color:var(--muted);font-size:11.4px;line-height:1.45}
+footer a{color:var(--accent)}
+@media (max-width:760px){
+  #main{flex-direction:column}
+  #mapwrap{flex:none;height:56vh}
+  #side{width:100%;flex:1;border-left:0;border-top:1px solid var(--line)}
+  #search{width:100%;max-width:none;margin:4px 0 0}
+}
+@media (prefers-reduced-motion: reduce){ .mk i{transition:none} }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@600&display=swap">
+
+<div id="app">
+<header>
+  <h1>Měření rychlosti v Praze</h1>
+  <span class="sub">133 míst dle seznamu Policie ČR pro Městskou policii hl. m. Prahy · účinnost od 1. 9. 2026</span>
+</header>
+<div id="filters">
+  <button class="chip" data-cat="A" aria-pressed="true" style="--c:var(--catA)"><span class="dot"></span>Hlídkové měření<span class="cnt">83</span></button>
+  <button class="chip" data-cat="B" aria-pressed="true" style="--c:var(--catB)"><span class="dot"></span>Úsekové měřiče<span class="cnt">32</span></button>
+  <button class="chip" data-cat="C" aria-pressed="true" style="--c:var(--catC)"><span class="dot"></span>Úsekové i stacionární<span class="cnt">7</span></button>
+  <button class="chip" data-cat="D" aria-pressed="true" style="--c:var(--catD)"><span class="dot"></span>Stacionární radary<span class="cnt">11</span></button>
+  <input id="search" type="search" placeholder="Hledat ulici nebo městskou část…" aria-label="Hledat">
+</div>
+<div id="main">
+  <div id="mapwrap">
+    <div id="world"><img class="base" src="{IMG}" alt="Mapa Prahy"></div>
+    <div id="zoomctl">
+      <button id="zin" aria-label="Přiblížit">+</button>
+      <button id="zout" aria-label="Oddálit">−</button>
+      <button id="zfit" aria-label="Celá Praha" style="font-size:13px">⤢</button>
+    </div>
+    <div id="pop" role="dialog"></div>
+    <div id="attrib">© OpenStreetMap přispěvatelé</div>
+  </div>
+  <nav id="side" aria-label="Seznam míst"></nav>
+</div>
+<footer>
+  Zdroj: <a href="https://mppraha.cz/dalsi-informace/mereni-rychlosti" rel="noopener">Městská policie hl. m. Prahy — Místa k měření rychlosti</a>,
+  č. j. KRPA-203411-1/ČJ-2026-0000DŽ (§ 79a zák. č. 361/2000 Sb.). Polohy bodů jsou orientační — u úseků jde o střed
+  popsaného úseku, u míst „v celé délce ulice“ o střed ulice. Rozhodující je úřední popis v seznamu.
+</footer>
+</div>
+
+<script>
+const PTS = {POINTS};
+const CATS = {A:"Hlídkové měření (Bezpečná místa)", B:"Úsekový měřič", C:"Úsekový i stacionární měřič", D:"Stacionární radar"};
+const CATORDER = ["A","B","C","D"];
+const SECT = {A:"Hlídkové měření — akce „Bezpečná místa“", B:"Úsekové měřiče rychlosti", C:"Úsekové měřiče využívané i jako stacionární", D:"Stacionární měřiče rychlosti"};
+
+const wrap = document.getElementById('mapwrap'), world = document.getElementById('world'),
+      pop = document.getElementById('pop'), side = document.getElementById('side');
+const W = {W}, H = {H};
+let k = 1, tx = 0, ty = 0, sel = null;
+const active = {A:true,B:true,C:true,D:true};
+let query = "";
+
+function norm(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");}
+
+// markery
+for (const p of PTS){
+  const el = document.createElement('button');
+  el.className = 'mk'; el.style.setProperty('--c', `var(--cat${p.cat})`);
+  el.style.left = p.x+'px'; el.style.top = p.y+'px';
+  el.setAttribute('aria-label', `${p.n}. ${p.t}`);
+  el.innerHTML = '<i></i>';
+  el.addEventListener('click', e => { e.stopPropagation(); select(p, false); });
+  world.appendChild(el); p.el = el;
+}
+
+// seznam
+function buildList(){
+  side.innerHTML = '';
+  for (const c of CATORDER){
+    const pts = PTS.filter(p => p.cat===c && visible(p));
+    if (!pts.length) continue;
+    const h = document.createElement('h2'); h.textContent = SECT[c]; side.appendChild(h);
+    for (const p of pts){
+      const r = document.createElement('div');
+      r.className = 'row' + (sel===p ? ' sel' : ''); r.style.setProperty('--c', `var(--cat${p.cat})`);
+      r.innerHTML = `<span class="no">${p.n}</span><span><span class="tt">${p.t}</span><br>
+        <span class="dd">${p.mc} · ${p.d}</span></span>`;
+      r.addEventListener('click', () => select(p, true));
+      side.appendChild(r); p.row = r;
+    }
+  }
+}
+function visible(p){
+  if (!active[p.cat]) return false;
+  if (query && !norm(p.t+' '+p.mc+' '+p.d).includes(query)) return false;
+  return true;
+}
+function refresh(){
+  for (const p of PTS) p.el.classList.toggle('dim', !visible(p));
+  buildList();
+}
+
+// výběr + popup
+function select(p, fly){
+  if (sel) sel.el.classList.remove('sel');
+  sel = p; p.el.classList.add('sel');
+  if (fly) flyTo(p.x, p.y, Math.max(k, 2.2));
+  showPop(p);
+  buildList();
+  if (p.row) p.row.scrollIntoView({block:'nearest'});
+}
+function showPop(p){
+  pop.style.setProperty('--c', `var(--cat${p.cat})`);
+  pop.innerHTML = `<button class="x" aria-label="Zavřít">×</button>
+    <div class="t">${p.n}. ${p.t}</div>
+    <div class="m">${p.mc} — ${p.d}</div>
+    <span class="c"><span class="dot"></span>${CATS[p.cat]}</span>`;
+  pop.querySelector('.x').onclick = () => { pop.style.display='none'; if(sel){sel.el.classList.remove('sel'); sel=null; buildList();} };
+  pop.style.display = 'block';
+  placePop();
+}
+function placePop(){
+  if (!sel || pop.style.display==='none') return;
+  const r = wrap.getBoundingClientRect();
+  let px = sel.x*k + tx, py = sel.y*k + ty;
+  px = Math.min(Math.max(px+14, 8), r.width - pop.offsetWidth - 8);
+  py = Math.min(Math.max(py-pop.offsetHeight-14, 8), r.height - pop.offsetHeight - 8);
+  pop.style.left = px+'px'; pop.style.top = py+'px';
+}
+
+// transformace
+function apply(){
+  world.style.transform = `translate(${tx}px,${ty}px) scale(${k})`;
+  world.style.setProperty('--inv', 1/k);
+  placePop();
+}
+function clamp(){
+  const r = wrap.getBoundingClientRect();
+  const minK = Math.min(r.width/W, r.height/H)*0.9;
+  k = Math.min(Math.max(k, minK), 5);
+  tx = Math.min(Math.max(tx, r.width - W*k - 40), 40);
+  ty = Math.min(Math.max(ty, r.height - H*k - 40), 40);
+  if (W*k < r.width) tx = (r.width - W*k)/2;
+  if (H*k < r.height) ty = (r.height - H*k)/2;
+}
+function fit(){
+  const r = wrap.getBoundingClientRect();
+  // fit na rozsah bodů
+  const xs = PTS.map(p=>p.x), ys = PTS.map(p=>p.y);
+  const x1=Math.min(...xs)-60, x2=Math.max(...xs)+60, y1=Math.min(...ys)-60, y2=Math.max(...ys)+60;
+  k = Math.min(r.width/(x2-x1), r.height/(y2-y1));
+  tx = (r.width - (x1+x2)*k)/2; ty = (r.height - (y1+y2)*k)/2;
+  clamp(); apply();
+}
+function flyTo(x, y, nk){
+  const r = wrap.getBoundingClientRect();
+  k = nk; tx = r.width/2 - x*k; ty = r.height/2 - y*k;
+  clamp(); apply();
+}
+function zoomAt(cx, cy, f){
+  const nk = Math.min(Math.max(k*f, 0.1), 5);
+  tx = cx - (cx-tx)*nk/k; ty = cy - (cy-ty)*nk/k; k = nk;
+  clamp(); apply();
+}
+
+wrap.addEventListener('wheel', e => {
+  e.preventDefault();
+  const r = wrap.getBoundingClientRect();
+  zoomAt(e.clientX-r.left, e.clientY-r.top, Math.exp(-e.deltaY*0.0016));
+}, {passive:false});
+
+// drag + pinch přes pointer events
+const ptrs = new Map();
+let pinch = null;
+wrap.addEventListener('pointerdown', e => {
+  if (e.target.closest('#zoomctl,#pop,.mk')) return;
+  wrap.setPointerCapture(e.pointerId);
+  ptrs.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  if (ptrs.size===2){ const a=[...ptrs.values()]; pinch={d:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)}; }
+  wrap.classList.add('drag');
+});
+wrap.addEventListener('pointermove', e => {
+  if (!ptrs.has(e.pointerId)) return;
+  const prev = ptrs.get(e.pointerId);
+  ptrs.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  if (ptrs.size===1){
+    tx += e.clientX-prev.x; ty += e.clientY-prev.y; clamp(); apply();
+  } else if (ptrs.size===2){
+    const a=[...ptrs.values()], d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);
+    const r=wrap.getBoundingClientRect();
+    zoomAt((a[0].x+a[1].x)/2-r.left,(a[0].y+a[1].y)/2-r.top, d/pinch.d);
+    pinch.d=d;
+  }
+});
+for (const ev of ['pointerup','pointercancel']) wrap.addEventListener(ev, e => {
+  ptrs.delete(e.pointerId); pinch=null;
+  if (!ptrs.size) wrap.classList.remove('drag');
+});
+wrap.addEventListener('click', e => {
+  if (e.target===wrap || e.target.classList.contains('base')){
+    pop.style.display='none';
+    if (sel){ sel.el.classList.remove('sel'); sel=null; buildList(); }
+  }
+});
+
+document.getElementById('zin').onclick = () => { const r=wrap.getBoundingClientRect(); zoomAt(r.width/2,r.height/2,1.45); };
+document.getElementById('zout').onclick = () => { const r=wrap.getBoundingClientRect(); zoomAt(r.width/2,r.height/2,1/1.45); };
+document.getElementById('zfit').onclick = fit;
+
+for (const ch of document.querySelectorAll('.chip')){
+  ch.addEventListener('click', () => {
+    const c = ch.dataset.cat;
+    active[c] = !active[c];
+    ch.setAttribute('aria-pressed', String(active[c]));
+    refresh();
+  });
+}
+document.getElementById('search').addEventListener('input', e => {
+  query = norm(e.target.value.trim()); refresh();
+});
+window.addEventListener('resize', () => { clamp(); apply(); });
+
+buildList(); fit();
+</script>

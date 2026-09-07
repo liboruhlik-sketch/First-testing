@@ -1,0 +1,1332 @@
+[
+ {
+  "n": 1,
+  "cat": "A",
+  "mc": "Praha 1",
+  "t": "Dvořákovo nábřeží",
+  "d": "od křiž. s ul. Nové Mlýny po vjezd na nám. Curieových",
+  "lat": 50.091978,
+  "lon": 14.423199,
+  "src": "Nové Mlýny;náměstí Curieových"
+ },
+ {
+  "n": 2,
+  "cat": "A",
+  "mc": "Praha 1",
+  "t": "Jelení, Mariánské hradby",
+  "d": "mezi křiž. s ul. U Brusnice a křiž. s ul. Badeniho, Chotkova",
+  "lat": 50.094412,
+  "lon": 14.400784,
+  "src": "Mariánské hradby;U Brusnice;Badeniho"
+ },
+ {
+  "n": 3,
+  "cat": "A",
+  "mc": "Praha 2",
+  "t": "Italská",
+  "d": "mezi křiž. s ul. Na Smetance a křiž. s ul. Lichnická",
+  "lat": 50.080288,
+  "lon": 14.438012,
+  "src": "Na Smetance;Lichnická"
+ },
+ {
+  "n": 4,
+  "cat": "A",
+  "mc": "Praha 2",
+  "t": "Sekaninova",
+  "d": "mezi křiž. s ul. Svatoplukova a vjezdem na Ostrčilovo nám.",
+  "lat": 50.06608,
+  "lon": 14.432073,
+  "src": "Sekaninova"
+ },
+ {
+  "n": 5,
+  "cat": "A",
+  "mc": "Praha 2",
+  "t": "V Pevnosti",
+  "d": "mezi Táborskou a Leopoldovou bránou",
+  "lat": 50.063467,
+  "lon": 14.421413,
+  "src": "V Pevnosti"
+ },
+ {
+  "n": 6,
+  "cat": "A",
+  "mc": "Praha 2",
+  "t": "K Rotundě",
+  "d": "mezi křiž. s ul. V Pevnosti a křiž. s ul. Štulcova, Soběslavova",
+  "lat": 50.064042,
+  "lon": 14.42017,
+  "src": "K Rotundě"
+ },
+ {
+  "n": 7,
+  "cat": "A",
+  "mc": "Praha 3",
+  "t": "Hartigova",
+  "d": "mezi domem č. 211 a křiž. s ul. Na vrcholu",
+  "lat": 50.093482,
+  "lon": 14.488627,
+  "src": "2596/211;Na Vrcholu"
+ },
+ {
+  "n": 8,
+  "cat": "A",
+  "mc": "Praha 3",
+  "t": "Hartigova",
+  "d": "mezi domem č. 198 a křiž. s ul. Na Chmelnici",
+  "lat": 50.092015,
+  "lon": 14.485974,
+  "src": "93/198;Na Chmelnici"
+ },
+ {
+  "n": 9,
+  "cat": "A",
+  "mc": "Praha 3",
+  "t": "Hartigova",
+  "d": "mezi domem č. 238 a křiž. s ul. Spojovací",
+  "lat": 50.092052,
+  "lon": 14.491761,
+  "src": "1944/238"
+ },
+ {
+  "n": 10,
+  "cat": "A",
+  "mc": "Praha 4",
+  "t": "Vídeňská",
+  "d": "v celé své délce",
+  "lat": 50.001528,
+  "lon": 14.482912,
+  "src": "Vídeňská"
+ },
+ {
+  "n": 11,
+  "cat": "A",
+  "mc": "Praha 4",
+  "t": "Vrbova",
+  "d": "v celé své délce",
+  "lat": 50.031533,
+  "lon": 14.422094,
+  "src": "Vrbova"
+ },
+ {
+  "n": 12,
+  "cat": "A",
+  "mc": "Praha 4",
+  "t": "Na Chodovci",
+  "d": "v celé své délce",
+  "lat": 50.048429,
+  "lon": 14.491516,
+  "src": "Na Chodovci"
+ },
+ {
+  "n": 13,
+  "cat": "A",
+  "mc": "Praha 4",
+  "t": "Jeremenkova",
+  "d": "v celé své délce",
+  "lat": 50.046932,
+  "lon": 14.415705,
+  "src": "Jeremenkova"
+ },
+ {
+  "n": 14,
+  "cat": "A",
+  "mc": "Praha 4",
+  "t": "Zálesí",
+  "d": "v celé své délce",
+  "lat": 50.028539,
+  "lon": 14.453051,
+  "src": "Zálesí"
+ },
+ {
+  "n": 15,
+  "cat": "A",
+  "mc": "Praha 4",
+  "t": "Čiklova",
+  "d": "mezi SVO č. 409730 a SVO č. 410347",
+  "lat": 50.063332,
+  "lon": 14.433082,
+  "src": "Čiklova"
+ },
+ {
+  "n": 16,
+  "cat": "A",
+  "mc": "Praha 4",
+  "t": "Petra Rezka",
+  "d": "v celé své délce",
+  "lat": 50.062222,
+  "lon": 14.43585,
+  "src": "Petra Rezka"
+ },
+ {
+  "n": 17,
+  "cat": "A",
+  "mc": "Praha 5",
+  "t": "Plzeňská",
+  "d": "mezi SVO č. 501 509 a křiž. s ul. U Kavalírky",
+  "lat": 50.06971,
+  "lon": 14.371742,
+  "src": "U Kavalírky"
+ },
+ {
+  "n": 18,
+  "cat": "A",
+  "mc": "Praha 5",
+  "t": "Podbělohorská",
+  "d": "mezi domem č. 22 a domem č. 26",
+  "lat": 50.073246,
+  "lon": 14.378942,
+  "src": "1556/22;Podbělohorská"
+ },
+ {
+  "n": 19,
+  "cat": "A",
+  "mc": "Praha 5",
+  "t": "Radlická",
+  "d": "mezi křiž. s ul. Stará Stodůlecká a křiž. s ul. V Zářezu",
+  "lat": 50.051974,
+  "lon": 14.362848,
+  "src": "Stará Stodůlecká;V Zářezu"
+ },
+ {
+  "n": 20,
+  "cat": "A",
+  "mc": "Praha 16",
+  "t": "K Cementárně (Pod Klapicí)",
+  "d": "mezi křiž. s ul. Pod Velkým hájem a křiž. s ul. Prvomájová",
+  "lat": 49.988192,
+  "lon": 14.359892,
+  "src": "Pod Velkým Hájem;Prvomájová"
+ },
+ {
+  "n": 21,
+  "cat": "A",
+  "mc": "Praha 16",
+  "t": "Elišky Přemyslovny (Na Baních)",
+  "d": "mezi křiž. s ul. Zvonařská a křiž. s ul. Faltysova",
+  "lat": 49.965497,
+  "lon": 14.387129,
+  "src": "Zvonařská;Faltysova"
+ },
+ {
+  "n": 22,
+  "cat": "A",
+  "mc": "Praha 16",
+  "t": "Radotínská",
+  "d": "mezi domem č. 18 a domem č. 69",
+  "lat": 50.003794,
+  "lon": 14.384965,
+  "src": "Radotínská"
+ },
+ {
+  "n": 23,
+  "cat": "A",
+  "mc": "Praha 16",
+  "t": "Karlická",
+  "d": "v celé své délce",
+  "lat": 49.978212,
+  "lon": 14.351061,
+  "src": "Karlická"
+ },
+ {
+  "n": 24,
+  "cat": "A",
+  "mc": "Praha 16",
+  "t": "Zderazská",
+  "d": "mezi křiž. s ul. Otínská a křiž. s ul. Karlická",
+  "lat": 49.982081,
+  "lon": 14.35099,
+  "src": "Otínská"
+ },
+ {
+  "n": 25,
+  "cat": "A",
+  "mc": "Praha 16",
+  "t": "Výpadová",
+  "d": "mezi křiž. s ul. Přeštínská a křiž. s ul. Matějovského",
+  "lat": 49.988991,
+  "lon": 14.371057,
+  "src": "Přeštínská;Matějovského"
+ },
+ {
+  "n": 26,
+  "cat": "A",
+  "mc": "Praha 6",
+  "t": "Na Vypichu",
+  "d": "v celé své délce",
+  "lat": 50.080638,
+  "lon": 14.345273,
+  "src": "Na Vypichu"
+ },
+ {
+  "n": 27,
+  "cat": "A",
+  "mc": "Praha 6",
+  "t": "Ruzyňská",
+  "d": "v celé své délce",
+  "lat": 50.084247,
+  "lon": 14.320485,
+  "src": "Ruzyňská"
+ },
+ {
+  "n": 28,
+  "cat": "A",
+  "mc": "Praha 6",
+  "t": "Kladenská",
+  "d": "v celé své délce",
+  "lat": 50.09774,
+  "lon": 14.365832,
+  "src": "Kladenská"
+ },
+ {
+  "n": 29,
+  "cat": "A",
+  "mc": "Praha 6",
+  "t": "Kamýcká",
+  "d": "v celé své délce",
+  "lat": 50.12801,
+  "lon": 14.390629,
+  "src": "Kamýcká"
+ },
+ {
+  "n": 30,
+  "cat": "A",
+  "mc": "Praha 6",
+  "t": "Nebušická",
+  "d": "mezi křiž. s ul. Na Malé Šárce a nám. Padlých",
+  "lat": 50.112035,
+  "lon": 14.333137,
+  "src": "Na Malé Šárce;náměstí Padlých"
+ },
+ {
+  "n": 31,
+  "cat": "A",
+  "mc": "Praha 6",
+  "t": "Sibeliova",
+  "d": "v celé své délce",
+  "lat": 50.091131,
+  "lon": 14.374925,
+  "src": "Sibeliova"
+ },
+ {
+  "n": 32,
+  "cat": "A",
+  "mc": "Praha 6",
+  "t": "Suchdolská",
+  "d": "v celé své délce",
+  "lat": 50.135591,
+  "lon": 14.382718,
+  "src": "Suchdolská"
+ },
+ {
+  "n": 33,
+  "cat": "A",
+  "mc": "Praha 6",
+  "t": "Vlastina",
+  "d": "v celé své délce",
+  "lat": 50.087902,
+  "lon": 14.307036,
+  "src": "Vlastina"
+ },
+ {
+  "n": 34,
+  "cat": "A",
+  "mc": "Praha 6",
+  "t": "Pod Marjánkou",
+  "d": "v celé své délce",
+  "lat": 50.08452,
+  "lon": 14.371964,
+  "src": "Pod Marjánkou"
+ },
+ {
+  "n": 35,
+  "cat": "A",
+  "mc": "Praha 6",
+  "t": "Pod Novým lesem",
+  "d": "v celé své délce",
+  "lat": 50.092538,
+  "lon": 14.368267,
+  "src": "Pod Novým lesem"
+ },
+ {
+  "n": 36,
+  "cat": "A",
+  "mc": "Praha 6",
+  "t": "Sestupná",
+  "d": "v celé své délce",
+  "lat": 50.087646,
+  "lon": 14.33204,
+  "src": "Sestupná"
+ },
+ {
+  "n": 37,
+  "cat": "A",
+  "mc": "Praha 6",
+  "t": "Radimova",
+  "d": "mezi křiž. s ul. Na Zástřelu a křiž. s ul. Kusá",
+  "lat": 50.087298,
+  "lon": 14.368978,
+  "src": "Radimova"
+ },
+ {
+  "n": 38,
+  "cat": "A",
+  "mc": "Praha 7",
+  "t": "Trojská",
+  "d": "mezi křiž. s ul. Pod Lisem a křiž. U Trojského zámku",
+  "lat": 50.115013,
+  "lon": 14.423273,
+  "src": "Pod Lisem;U Trojského zámku"
+ },
+ {
+  "n": 39,
+  "cat": "A",
+  "mc": "Praha 7",
+  "t": "Bubenské nábřeží",
+  "d": "v celé své délce",
+  "lat": 50.098267,
+  "lon": 14.444811,
+  "src": "Bubenské nábřeží"
+ },
+ {
+  "n": 40,
+  "cat": "A",
+  "mc": "Praha 7",
+  "t": "Ortenovo nám.",
+  "d": "mezi křiž. s ul. Přívozní a křiž. Ortenovo nám. × Vrbenského",
+  "lat": 50.108265,
+  "lon": 14.447001,
+  "src": "Ortenovo náměstí"
+ },
+ {
+  "n": 41,
+  "cat": "A",
+  "mc": "Praha 7",
+  "t": "nábřeží Kpt. Jaroše",
+  "d": "v celé své délce",
+  "lat": 50.095957,
+  "lon": 14.429479,
+  "src": "nábřeží Kapitána Jaroše"
+ },
+ {
+  "n": 42,
+  "cat": "A",
+  "mc": "Praha 7",
+  "t": "Veletržní",
+  "d": "mezi Letenským náměstím a křiž. s ul. Dukelských hrdinů",
+  "lat": 50.101087,
+  "lon": 14.427718,
+  "src": "Letenské náměstí;Veletržní"
+ },
+ {
+  "n": 43,
+  "cat": "A",
+  "mc": "Praha 8",
+  "t": "Žernosecká",
+  "d": "mezi křiž. s ul. Burešova a křiž. s ul. Famfulíkova",
+  "lat": 50.133355,
+  "lon": 14.476776,
+  "src": "Žernosecká"
+ },
+ {
+  "n": 44,
+  "cat": "A",
+  "mc": "Praha 8",
+  "t": "Horňátecká",
+  "d": "mezi křiž. s ul. Přemyšlenská a křiž. s ul. Klapkova",
+  "lat": 50.132699,
+  "lon": 14.453112,
+  "src": "Horňátecká"
+ },
+ {
+  "n": 45,
+  "cat": "A",
+  "mc": "Praha 8",
+  "t": "Čimická",
+  "d": "mezi křiž. s ul. Tišická a křiž. s ul. Mlazická",
+  "lat": 50.140746,
+  "lon": 14.431955,
+  "src": "Tišická;Mlazická"
+ },
+ {
+  "n": 46,
+  "cat": "A",
+  "mc": "Praha 8",
+  "t": "Lodžská",
+  "d": "v celé své délce",
+  "lat": 50.131268,
+  "lon": 14.41802,
+  "src": "Lodžská"
+ },
+ {
+  "n": 47,
+  "cat": "A",
+  "mc": "Praha 9",
+  "t": "Lovosická",
+  "d": "mezi domem č. 711/30 a křiž. s ul. Zásadská",
+  "lat": 50.129265,
+  "lon": 14.497573,
+  "src": "Lovosická;Zásadská"
+ },
+ {
+  "n": 48,
+  "cat": "A",
+  "mc": "Praha 9",
+  "t": "Českobrodská",
+  "d": "mezi křiž. s ul. Pod Táborem a domem č. 34/7",
+  "lat": 50.087255,
+  "lon": 14.519432,
+  "src": "Pod Táborem"
+ },
+ {
+  "n": 49,
+  "cat": "A",
+  "mc": "Praha 9",
+  "t": "Poděbradská",
+  "d": "mezi SVO č. 900 288 a domem č. 531/50",
+  "lat": 50.103221,
+  "lon": 14.518739,
+  "src": "531/50"
+ },
+ {
+  "n": 50,
+  "cat": "A",
+  "mc": "Praha 9",
+  "t": "Mladoboleslavská",
+  "d": "mezi křiž. s ul. Semčická a křiž. s ul. Nymburská",
+  "lat": 50.132228,
+  "lon": 14.557414,
+  "src": "Semčická;Nymburská"
+ },
+ {
+  "n": 51,
+  "cat": "A",
+  "mc": "Praha 9",
+  "t": "Mladoboleslavská",
+  "d": "mezi křiž. s ul. Lohenická a křiž. s ul. Ronovská",
+  "lat": 50.147961,
+  "lon": 14.582058,
+  "src": "Lohenická;Ronovská"
+ },
+ {
+  "n": 52,
+  "cat": "A",
+  "mc": "Praha 9",
+  "t": "Nad Krocínkou",
+  "d": "v celé své délce",
+  "lat": 50.116193,
+  "lon": 14.504612,
+  "src": "Nad Krocínkou"
+ },
+ {
+  "n": 53,
+  "cat": "A",
+  "mc": "Praha 18",
+  "t": "Schoellerova",
+  "d": "mezi domem č. 876/14 a domem č. 954/55",
+  "lat": 50.161396,
+  "lon": 14.522634,
+  "src": "876/14;Schoellerova"
+ },
+ {
+  "n": 54,
+  "cat": "A",
+  "mc": "Praha 19",
+  "t": "K Cihelně",
+  "d": "mezi domem č. 59/2 a křiž. s ul. Pod garážemi",
+  "lat": 50.123751,
+  "lon": 14.580293,
+  "src": "K Cihelně;Pod Garážemi"
+ },
+ {
+  "n": 55,
+  "cat": "A",
+  "mc": "Praha 19",
+  "t": "Polabská",
+  "d": "mezi křiž. s ul. Za Můstkem a křiž. s ul. Na Kačence",
+  "lat": 50.160361,
+  "lon": 14.543678,
+  "src": "Polabská;Na Kačence"
+ },
+ {
+  "n": 56,
+  "cat": "A",
+  "mc": "Praha 10",
+  "t": "Práčská",
+  "d": "mezi SVO č. 002 853 a SVO č. 002 843",
+  "lat": 50.052936,
+  "lon": 14.505874,
+  "src": "Práčská"
+ },
+ {
+  "n": 57,
+  "cat": "A",
+  "mc": "Praha 10",
+  "t": "Práčská",
+  "d": "mezi křiž. s ul. Aubrechtové a SVO č. 002 856",
+  "lat": 50.053723,
+  "lon": 14.499043,
+  "src": "Aubrechtové"
+ },
+ {
+  "n": 58,
+  "cat": "A",
+  "mc": "Praha 10",
+  "t": "Švehlova",
+  "d": "mezi SVO č. 007 532 a domem č. 15",
+  "lat": 50.055715,
+  "lon": 14.515956,
+  "src": "3215/15;Švehlova"
+ },
+ {
+  "n": 59,
+  "cat": "A",
+  "mc": "Praha 10",
+  "t": "Průběžná",
+  "d": "mezi domem č. 56 a domem č. 74",
+  "lat": 50.066262,
+  "lon": 14.498223,
+  "src": "1938/56;Průběžná"
+ },
+ {
+  "n": 60,
+  "cat": "A",
+  "mc": "Praha 10",
+  "t": "Vršovická",
+  "d": "mezi křiž. s ul. U Vršovického nádraží a křiž. s ul. Perucká",
+  "lat": 50.065909,
+  "lon": 14.445572,
+  "src": "U Vršovického nádraží;Perucká"
+ },
+ {
+  "n": 61,
+  "cat": "A",
+  "mc": "Praha 11",
+  "t": "Výstavní",
+  "d": "mezi SVO č. 422 207 a SVO č. 422 230",
+  "lat": 50.035636,
+  "lon": 14.530045,
+  "src": "Výstavní"
+ },
+ {
+  "n": 62,
+  "cat": "A",
+  "mc": "Praha 11",
+  "t": "U Kunratického lesa",
+  "d": "mezi SVO č. 426 435 a SVO č. 426 443",
+  "lat": 50.030522,
+  "lon": 14.487695,
+  "src": "U Kunratického lesa"
+ },
+ {
+  "n": 63,
+  "cat": "A",
+  "mc": "Praha 11",
+  "t": "Květnového vítězství",
+  "d": "mezi domem č. 57 a domem č. 53",
+  "lat": 50.033621,
+  "lon": 14.504044,
+  "src": "57/17;Květnového vítězství"
+ },
+ {
+  "n": 64,
+  "cat": "A",
+  "mc": "Praha 11",
+  "t": "Ke Kateřinkám",
+  "d": "mezi domem č. 1412 a domem č. 1403",
+  "lat": 50.023194,
+  "lon": 14.515134,
+  "src": "Ke Kateřinkám"
+ },
+ {
+  "n": 65,
+  "cat": "A",
+  "mc": "Praha 12",
+  "t": "Generála Šišky",
+  "d": "mezi křiž. s ul. Dolnocholupická a křiž. s ul. Novodvorská",
+  "lat": 50.00614,
+  "lon": 14.402948,
+  "src": "Generála Šišky"
+ },
+ {
+  "n": 66,
+  "cat": "A",
+  "mc": "Praha 12",
+  "t": "Durychova",
+  "d": "mezi křiž. s ul. Novodvorská a křiž. s ul. U Kamýku",
+  "lat": 50.01772,
+  "lon": 14.442953,
+  "src": "Durychova;U Kamýku"
+ },
+ {
+  "n": 67,
+  "cat": "A",
+  "mc": "Praha 12",
+  "t": "Novodvorská",
+  "d": "mezi křiž. s ul. Freiwaldova a křiž. s ul. Písnická",
+  "lat": 50.008361,
+  "lon": 14.454742,
+  "src": "Freiwaldova"
+ },
+ {
+  "n": 68,
+  "cat": "A",
+  "mc": "Praha 12",
+  "t": "Československého exilu",
+  "d": "mezi křiž. s ul. Pavelkova a křiž. s ul. Platónova",
+  "lat": 50.003369,
+  "lon": 14.417474,
+  "src": "Československého exilu"
+ },
+ {
+  "n": 69,
+  "cat": "A",
+  "mc": "Praha 13",
+  "t": "Plzeňská",
+  "d": "mezi křiž. s ul. Jeremiášova, Slánská a křiž. s ul. Ke Koh-i-nooru",
+  "lat": 50.063396,
+  "lon": 14.321706,
+  "src": "Ke Koh-i-nooru"
+ },
+ {
+  "n": 70,
+  "cat": "A",
+  "mc": "Praha 13",
+  "t": "Hrozenkovská",
+  "d": "mezi křiž. s ul. Na Radosti a křiž. s ul. Věstonická",
+  "lat": 50.060945,
+  "lon": 14.285152,
+  "src": "Hrozenkovská;Věstonická"
+ },
+ {
+  "n": 71,
+  "cat": "A",
+  "mc": "Praha 14",
+  "t": "Broumarská",
+  "d": "mezi křiž. s ul. Vajgarská a křiž. s ul. Stupská",
+  "lat": 50.089806,
+  "lon": 14.547109,
+  "src": "Broumarská"
+ },
+ {
+  "n": 72,
+  "cat": "A",
+  "mc": "Praha 14",
+  "t": "Cíglerova",
+  "d": "mezi křiž. s ul. Bratří Venclíků a křiž. s ul. Pospíchalova",
+  "lat": 50.106022,
+  "lon": 14.556396,
+  "src": "Cíglerova"
+ },
+ {
+  "n": 73,
+  "cat": "A",
+  "mc": "Praha 14",
+  "t": "Ocelkova",
+  "d": "mezi křiž. s ul. Dobrovolného, Generála Janouška a bližší křiž. s ul. Bryksova",
+  "lat": 50.103554,
+  "lon": 14.57599,
+  "src": "Ocelkova"
+ },
+ {
+  "n": 74,
+  "cat": "A",
+  "mc": "Praha 21",
+  "t": "Slavětínská",
+  "d": "v celé své délce",
+  "lat": 50.091672,
+  "lon": 14.667381,
+  "src": "Slavětínská"
+ },
+ {
+  "n": 75,
+  "cat": "A",
+  "mc": "Praha 21",
+  "t": "Staroklánovická",
+  "d": "v celé své délce",
+  "lat": 50.086373,
+  "lon": 14.664883,
+  "src": "Staroklánovická"
+ },
+ {
+  "n": 76,
+  "cat": "A",
+  "mc": "Praha 21",
+  "t": "Rohožnická",
+  "d": "mezi křiž. s ul. Miletická a křiž. s ul. Novosibřinská",
+  "lat": 50.07097,
+  "lon": 14.67762,
+  "src": "Rohožnická"
+ },
+ {
+  "n": 77,
+  "cat": "A",
+  "mc": "Praha 21",
+  "t": "Zaříčanská",
+  "d": "mezi křiž. s ul. Chyjická a křiž. s ul. Novosibřinská",
+  "lat": 50.073659,
+  "lon": 14.665545,
+  "src": "Zaříčanská"
+ },
+ {
+  "n": 78,
+  "cat": "A",
+  "mc": "Praha 21",
+  "t": "Podzámecká",
+  "d": "mezi křiž. s ul. Kounovská a křiž. s ul. V Lipách",
+  "lat": 50.06055,
+  "lon": 14.637064,
+  "src": "Podzámecká"
+ },
+ {
+  "n": 79,
+  "cat": "A",
+  "mc": "Praha 15",
+  "t": "Hornoměcholupská",
+  "d": "mezi křiž. s ul. Kunická a křiž. s ul. K Lesoparku",
+  "lat": 50.050736,
+  "lon": 14.536532,
+  "src": "Kunická"
+ },
+ {
+  "n": 80,
+  "cat": "A",
+  "mc": "Praha 15",
+  "t": "Starodubečská",
+  "d": "mezi křiž. s ul. U Hodin a křiž. s ul. Za Pavilonem",
+  "lat": 50.062508,
+  "lon": 14.590528,
+  "src": "Starodubečská"
+ },
+ {
+  "n": 81,
+  "cat": "A",
+  "mc": "Praha 15",
+  "t": "Euklidova",
+  "d": "mezi sloupy VO č. 011663 a 011660",
+  "lat": 50.034455,
+  "lon": 14.550026,
+  "src": "Euklidova"
+ },
+ {
+  "n": 82,
+  "cat": "A",
+  "mc": "Praha 22",
+  "t": "Mírová",
+  "d": "mezi křiž. s ul. Do Hlinek a křiž. s ul. V Milíři",
+  "lat": 50.010502,
+  "lon": 14.625862,
+  "src": "Do Hlinek;V Milíři"
+ },
+ {
+  "n": 83,
+  "cat": "A",
+  "mc": "Praha 22",
+  "t": "Květnového povstání",
+  "d": "mezi hotelem Park Holliday a křiž. s ul. K Pitkovicům",
+  "lat": 50.013881,
+  "lon": 14.599657,
+  "src": "K Pitkovicům"
+ },
+ {
+  "n": 84,
+  "cat": "B",
+  "mc": "Praha 5, 6",
+  "t": "Strahovský tunel",
+  "d": "směr tunel Mrázovka, mezi 1150,3 m a 406,8 m",
+  "lat": 50.079059,
+  "lon": 14.388126,
+  "src": "Strahovský tunel"
+ },
+ {
+  "n": 85,
+  "cat": "B",
+  "mc": "Praha 5, 6",
+  "t": "Strahovský tunel",
+  "d": "směr ul. Patočkova, mezi 392,9 m a 1160 m",
+  "lat": 50.079059,
+  "lon": 14.389244,
+  "src": "Strahovský tunel"
+ },
+ {
+  "n": 86,
+  "cat": "B",
+  "mc": "Praha 5, 6",
+  "t": "Tunel Mrázovka",
+  "d": "směr ul. Dobříšská, mezi 5055,3 m a 4591,3 m",
+  "lat": 50.069308,
+  "lon": 14.397288,
+  "src": "tunel Mrázovka"
+ },
+ {
+  "n": 87,
+  "cat": "B",
+  "mc": "Praha 5, 6",
+  "t": "Tunel Mrázovka",
+  "d": "směr Strahovský tunel, mezi 4555,2 m a 5139,6 m",
+  "lat": 50.069308,
+  "lon": 14.398405,
+  "src": "tunel Mrázovka"
+ },
+ {
+  "n": 88,
+  "cat": "B",
+  "mc": "Praha 5",
+  "t": "Dobříšská",
+  "d": "směr Zlíchovský tunel, mezi 3465 m a 2944 m",
+  "lat": 50.058761,
+  "lon": 14.406091,
+  "src": "Dobříšská"
+ },
+ {
+  "n": 89,
+  "cat": "B",
+  "mc": "Praha 5",
+  "t": "Dobříšská",
+  "d": "směr tunel Mrázovka, mezi 2935 m a 3459 m",
+  "lat": 50.058761,
+  "lon": 14.407209,
+  "src": "Dobříšská"
+ },
+ {
+  "n": 90,
+  "cat": "B",
+  "mc": "Praha 8",
+  "t": "Ústecká",
+  "d": "směr z centra, mezi SVO č. 807347 a č. 807359",
+  "lat": 50.144403,
+  "lon": 14.450835,
+  "src": "Ústecká"
+ },
+ {
+  "n": 91,
+  "cat": "B",
+  "mc": "Praha 6",
+  "t": "Bělohorská",
+  "d": "směr z centra, mezi SVO č. 601596 a č. 601618",
+  "lat": 50.07711,
+  "lon": 14.336676,
+  "src": "Bělohorská"
+ },
+ {
+  "n": 92,
+  "cat": "B",
+  "mc": "Praha 6",
+  "t": "Evropská – Alžírská",
+  "d": "směr do centra, mezi SVO č. 619837 a č. 619472",
+  "lat": 50.096236,
+  "lon": 14.351666,
+  "src": "Alžírská"
+ },
+ {
+  "n": 93,
+  "cat": "B",
+  "mc": "Praha 4",
+  "t": "Podolské nábřeží",
+  "d": "směr do centra, mezi SVO č. 401507 a č. 400039",
+  "lat": 50.054454,
+  "lon": 14.417956,
+  "src": "Podolské nábřeží"
+ },
+ {
+  "n": 94,
+  "cat": "B",
+  "mc": "Praha 10",
+  "t": "Jižní spojka – Průmyslová",
+  "d": "směr Barrandovský most, mezi SVO č. 006343 a č. 006304",
+  "lat": 50.0605,
+  "lon": 14.5245,
+  "src": "fix"
+ },
+ {
+  "n": 95,
+  "cat": "B",
+  "mc": "Praha 4",
+  "t": "Jižní spojka – Barrandovský most",
+  "d": "směr Krč, mezi SVO č. 402879 a č. 402889",
+  "lat": 50.034,
+  "lon": 14.416,
+  "src": "fix"
+ },
+ {
+  "n": 96,
+  "cat": "B",
+  "mc": "Praha 4",
+  "t": "Jižní spojka – Krč – Chodovská",
+  "d": "směr Teplice, mezi SVO č. 402887 a č. 403012",
+  "lat": 50.045,
+  "lon": 14.468,
+  "src": "fix"
+ },
+ {
+  "n": 97,
+  "cat": "B",
+  "mc": "Praha 4",
+  "t": "Jižní spojka – Chodovská",
+  "d": "směr Teplice, mezi SVO č. 403010 a č. 403045",
+  "lat": 50.052,
+  "lon": 14.495,
+  "src": "fix"
+ },
+ {
+  "n": 98,
+  "cat": "B",
+  "mc": "Praha 9",
+  "t": "Poděbradská",
+  "d": "směr do centra, mezi SVO č. 900446 a č. 900425",
+  "lat": 50.104108,
+  "lon": 14.526791,
+  "src": "Poděbradská"
+ },
+ {
+  "n": 99,
+  "cat": "B",
+  "mc": "Praha 9",
+  "t": "Poděbradská",
+  "d": "směr z centra, mezi SVO č. 919696 a č. 900457",
+  "lat": 50.104108,
+  "lon": 14.527909,
+  "src": "Poděbradská"
+ },
+ {
+  "n": 100,
+  "cat": "B",
+  "mc": "Praha 4",
+  "t": "5. května",
+  "d": "směr do centra, mezi SVO č. 409912 a č. 409893",
+  "lat": 50.040344,
+  "lon": 14.470054,
+  "src": "5. května"
+ },
+ {
+  "n": 101,
+  "cat": "B",
+  "mc": "Praha 5",
+  "t": "Strakonická",
+  "d": "směr do centra, mezi SVO č. 521966 a č. 515573",
+  "lat": 50.0455,
+  "lon": 14.4085,
+  "src": "fix"
+ },
+ {
+  "n": 102,
+  "cat": "B",
+  "mc": "Praha 6",
+  "t": "Patočkova",
+  "d": "směr do centra, mezi SVO č. 600761 a č. 600737",
+  "lat": 50.092609,
+  "lon": 14.387104,
+  "src": "Patočkova"
+ },
+ {
+  "n": 103,
+  "cat": "B",
+  "mc": "Praha 5",
+  "t": "Dobříšská – tunel Mrázovka",
+  "d": "směr Strahovský tunel, mezi 3459 m a 4555,2 m",
+  "lat": 50.0593,
+  "lon": 14.408048,
+  "src": "Dobříšská"
+ },
+ {
+  "n": 104,
+  "cat": "B",
+  "mc": "Praha 4",
+  "t": "Jižní spojka – Spořilovská",
+  "d": "směr 5. května, mezi SVO č. 403037 a č. 403019",
+  "lat": 50.048,
+  "lon": 14.48,
+  "src": "fix"
+ },
+ {
+  "n": 105,
+  "cat": "B",
+  "mc": "Praha 8",
+  "t": "Argentinská → V Holešovičkách",
+  "d": "směr z centra, mezi SVO č. 701425 a č. 802597, vč. nájezdu z ul. Povltavská",
+  "lat": 50.1095,
+  "lon": 14.443,
+  "src": "fix"
+ },
+ {
+  "n": 106,
+  "cat": "B",
+  "mc": "Praha 8",
+  "t": "Liberecká → V Holešovičkách",
+  "d": "směr do centra, od SVO č. 802181 ke SVO č. 802561",
+  "lat": 50.123774,
+  "lon": 14.479016,
+  "src": "Liberecká"
+ },
+ {
+  "n": 107,
+  "cat": "B",
+  "mc": "Praha 9",
+  "t": "Cínovecká",
+  "d": "směr do centra k ul. Liberecká, mezi SVO č. 806617 a č. 802248",
+  "lat": 50.157056,
+  "lon": 14.485197,
+  "src": "Cínovecká"
+ },
+ {
+  "n": 108,
+  "cat": "B",
+  "mc": "Praha 4",
+  "t": "Spořilovská – Hlavní",
+  "d": "směr do centra, mezi SVO č. 426831 a č. 415030",
+  "lat": 50.048718,
+  "lon": 14.481876,
+  "src": "Spořilovská"
+ },
+ {
+  "n": 109,
+  "cat": "B",
+  "mc": "Praha 6",
+  "t": "Brusnický tunel",
+  "d": "směr Troja (– Dejvický tunel), mezi 16,942 km a 17,748 km",
+  "lat": 50.089144,
+  "lon": 14.38314,
+  "src": "Brusnický tunel"
+ },
+ {
+  "n": 110,
+  "cat": "B",
+  "mc": "Praha 6",
+  "t": "Dejvický tunel",
+  "d": "směr Troja (– Bubenečský tunel), mezi 18,12 km a 18,772 km",
+  "lat": 50.095878,
+  "lon": 14.399787,
+  "src": "Dejvický tunel"
+ },
+ {
+  "n": 111,
+  "cat": "B",
+  "mc": "Praha 6, 7",
+  "t": "Bubenečský tunel",
+  "d": "směr Troja, mezi 19,393 km a 21,701 km",
+  "lat": 50.110519,
+  "lon": 14.419872,
+  "src": "Bubenečský tunel"
+ },
+ {
+  "n": 112,
+  "cat": "B",
+  "mc": "Praha 7, 6",
+  "t": "Bubenečský tunel",
+  "d": "směr Strahov (– Dejvický tunel), mezi 21,694 km a 19,418 km",
+  "lat": 50.110519,
+  "lon": 14.418755,
+  "src": "Bubenečský tunel"
+ },
+ {
+  "n": 113,
+  "cat": "B",
+  "mc": "Praha 6",
+  "t": "Dejvický a Brusnický tunel",
+  "d": "směr Strahov, mezi 18,824 km a 18,178 km",
+  "lat": 50.095878,
+  "lon": 14.398669,
+  "src": "Dejvický tunel"
+ },
+ {
+  "n": 114,
+  "cat": "B",
+  "mc": "Praha 6",
+  "t": "Brusnický tunel",
+  "d": "směr Strahov, mezi 17,779 km a 16,967 km",
+  "lat": 50.089144,
+  "lon": 14.382023,
+  "src": "Brusnický tunel"
+ },
+ {
+  "n": 115,
+  "cat": "B",
+  "mc": "Praha 6",
+  "t": "Lysolajské údolí",
+  "d": "mezi SVO č. 610739 a č. 610695",
+  "lat": 50.124573,
+  "lon": 14.37667,
+  "src": "Lysolajské údolí"
+ },
+ {
+  "n": 116,
+  "cat": "C",
+  "mc": "Praha 6",
+  "t": "Horoměřická – V Šáreckém údolí",
+  "d": "mezi SVO č. 608354 a č. 608364",
+  "lat": 50.106853,
+  "lon": 14.357987,
+  "src": "Horoměřická;V Šáreckém údolí"
+ },
+ {
+  "n": 117,
+  "cat": "C",
+  "mc": "Praha 10",
+  "t": "U Vršovického hřbitova – Bohdalecká",
+  "d": "směr do centra, mezi SVO č. 002033 a č. 002018",
+  "lat": 50.061717,
+  "lon": 14.469562,
+  "src": "U Vršovického hřbitova"
+ },
+ {
+  "n": 118,
+  "cat": "C",
+  "mc": "Praha 6",
+  "t": "Libocká",
+  "d": "mezi SVO č. 611752 a č. 611743",
+  "lat": 50.088622,
+  "lon": 14.32678,
+  "src": "Libocká"
+ },
+ {
+  "n": 119,
+  "cat": "C",
+  "mc": "Praha 9",
+  "t": "Průmyslová – V Chaloupkách",
+  "d": "mezi SVO č. 908012 a č. 908050",
+  "lat": 50.100721,
+  "lon": 14.53617,
+  "src": "V Chaloupkách"
+ },
+ {
+  "n": 120,
+  "cat": "C",
+  "mc": "Praha 5",
+  "t": "K Barrandovu",
+  "d": "směr z centra, mezi SVO č. 512155 a č. 512164",
+  "lat": 50.02677,
+  "lon": 14.37435,
+  "src": "K Barrandovu"
+ },
+ {
+  "n": 121,
+  "cat": "C",
+  "mc": "Praha 5",
+  "t": "K Barrandovu",
+  "d": "směr do centra, mezi SVO č. 523579 a č. 512178",
+  "lat": 50.02677,
+  "lon": 14.373232,
+  "src": "K Barrandovu"
+ },
+ {
+  "n": 122,
+  "cat": "C",
+  "mc": "Praha 6",
+  "t": "Evropská – Alžírská",
+  "d": "směr z centra, mezi SVO č. 617622 a 617632",
+  "lat": 50.096236,
+  "lon": 14.352784,
+  "src": "Alžírská"
+ },
+ {
+  "n": 123,
+  "cat": "D",
+  "mc": "Praha 6",
+  "t": "Střešovická",
+  "d": "směr do centra, mezi SVO č. 600309 a č. 600307",
+  "lat": 50.092865,
+  "lon": 14.375455,
+  "src": "Střešovická"
+ },
+ {
+  "n": 124,
+  "cat": "D",
+  "mc": "Praha 5",
+  "t": "K Barrandovu (× Lamačova, Slavínského)",
+  "d": "směr do centra, mezi SVO č. 512199 a č. 523581",
+  "lat": 50.036053,
+  "lon": 14.374184,
+  "src": "Lamačova"
+ },
+ {
+  "n": 125,
+  "cat": "D",
+  "mc": "Praha 2",
+  "t": "Legerova (× Rumunská)",
+  "d": "směr do centra, v místě přechodu pro chodce",
+  "lat": 50.073804,
+  "lon": 14.430962,
+  "src": "Rumunská"
+ },
+ {
+  "n": 126,
+  "cat": "D",
+  "mc": "Praha 2",
+  "t": "Sokolská (× Ječná)",
+  "d": "směr z centra, v místě přechodu pro chodce",
+  "lat": 50.075623,
+  "lon": 14.421431,
+  "src": "Ječná"
+ },
+ {
+  "n": 127,
+  "cat": "D",
+  "mc": "Praha 6",
+  "t": "Na Okraji",
+  "d": "směr z centra, před přechodem mezi SVO č. 603618 a č. 603619",
+  "lat": 50.088319,
+  "lon": 14.336893,
+  "src": "Na Okraji"
+ },
+ {
+  "n": 128,
+  "cat": "D",
+  "mc": "Praha 6",
+  "t": "Šantrochova",
+  "d": "směr do centra, před přechodem u SVO č. 603496",
+  "lat": 50.087864,
+  "lon": 14.348642,
+  "src": "Šantrochova"
+ },
+ {
+  "n": 129,
+  "cat": "D",
+  "mc": "Praha 6",
+  "t": "Na Dlouhém lánu",
+  "d": "směr z centra, před přechodem u SVO č. 609250",
+  "lat": 50.095578,
+  "lon": 14.360084,
+  "src": "Na Dlouhém lánu"
+ },
+ {
+  "n": 130,
+  "cat": "D",
+  "mc": "Praha 4",
+  "t": "Zálesí",
+  "d": "směr ul. Novodvorská, před přechodem u SVO č. 412479",
+  "lat": 50.028,
+  "lon": 14.453051,
+  "src": "Zálesí"
+ },
+ {
+  "n": 131,
+  "cat": "D",
+  "mc": "Praha 4",
+  "t": "Zálesí",
+  "d": "směr Jižní spojka, mezi SVO č. 412482 a č. 412478",
+  "lat": 50.029078,
+  "lon": 14.453051,
+  "src": "Zálesí"
+ },
+ {
+  "n": 132,
+  "cat": "D",
+  "mc": "Praha 4",
+  "t": "Modřanská",
+  "d": "směr do centra, mezi SVO č. 401743 a č. 401741 (zastávka MHD)",
+  "lat": 50.037644,
+  "lon": 14.407619,
+  "src": "Modřanská"
+ },
+ {
+  "n": 133,
+  "cat": "D",
+  "mc": "Praha 4",
+  "t": "Modřanská",
+  "d": "směr z centra, u SVO č. 401732",
+  "lat": 50.037644,
+  "lon": 14.408736,
+  "src": "Modřanská"
+ }
+]
