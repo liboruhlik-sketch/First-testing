@@ -1,0 +1,47 @@
+{
+ "generated_from": {
+  "customers": 2397,
+  "companies": 83301
+ },
+ "segments": {
+  "Činnosti politických stran a organizací": 30,
+  "Scénická umění": 30,
+  "Terciárne vzdelávanie": 30,
+  "Terciární vzdělávání": 30,
+  "Ostatní peněžní zprostředkování": 30,
+  "Regulace a podpora podnikatelského prostředí": 30,
+  "Činnosti muzeí": 30,
+  "Správa fondů": 30,
+  "Všeobecné činnosti veřejné správy": 30,
+  "Činnosti profesních organizací": 30,
+  "Činnosti podnikatelských a zaměstnavatelských organizací": 30,
+  "Ústavní zdravotní péče": 30,
+  "Sportovní činnosti": 30,
+  "Činnosti ostatných členských organizácií": 30,
+  "Činnosti podnikateľských a zamestnávateľských a profesijných členských organizácií": 30,
+  "Činnosti profesijných členských organizácií": 26,
+  "Činnosti záujmových organizácií": 25,
+  "Ostatní výzkum a vývoj voblasti přírodních atechnických věd": 24,
+  "Reklamní činnosti": 19,
+  "Ostatní zábavní a rekreační činnosti j. n.": 19,
+  "Všeobecná verejná správa": 18,
+  "Ostatní poradenství voblasti podnikání a řízení": 16,
+  "Správa nemovitostí na základě smlouvy nebo dohody": 16,
+  "Činnosti ostatních organizací sdružujících osoby za účelem prosazování společných zájmů j. n.": 15,
+  "Provozování sportovních zařízení": 11,
+  "Poradenství voblasti řízení": 10,
+  "Vydávání knih, periodických publikací a ostatní vydavatelské činnosti": 9,
+  "Právní činnosti": 5,
+  "Činnosti reklamních agentur": 4
+ },
+ "size_buckets": {
+  "1000+": 12,
+  "250-999": 12,
+  "50-249": 3
+ },
+ "countries": {
+  "Polsko": 8,
+  "Chorvatsko": 8
+ },
+ "title_tokens": {}
+}
