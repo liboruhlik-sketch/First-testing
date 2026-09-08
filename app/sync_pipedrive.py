@@ -27,12 +27,21 @@ BASE = os.environ.get("PIPEDRIVE_BASE", "https://api.pipedrive.com/api/v2")
 # Hashe custom fieldů organizací v Mediaboard CRM (plněné saleskit/Merk integrací).
 DEFAULT_ORG_FIELDS = {
     "ico": "68e8d45bf22dd1063bcb5da9eebcd6987e23ffac",
+    "dic": "387127628a8e541e2c7ff47bc84c509c31a167db",             # DIČ, např. CZ26166062
     "domain": "d1291d1d34fd4d1daadbd2b8a4eb6dad3364acab",          # web firmy
     "segment": "00c1c87f0775e15448750312cc106da51a7125d7",         # obor (NACE text)
     "employees_bucket": "5e0b51d1e8e2171e0e3678d090e8a6169baa9153",  # „25 - 49 zaměstnanců"
     "saleskit_url": "3a2364318da8a366c314a903949fec3f0696ce68",
 }
 ORG_FIELDS = {**DEFAULT_ORG_FIELDS, **json.loads(os.environ.get("PIPEDRIVE_ORG_FIELDS", "{}"))}
+
+# Adresa v CRM skoro chybí — zemi odvozujeme z prefixu DIČ.
+DIC_COUNTRY = {"CZ": "Česko", "SK": "Slovensko", "PL": "Polsko", "SI": "Slovinsko",
+               "HR": "Chorvatsko", "RS": "Srbsko", "DE": "Německo", "AT": "Rakousko", "HU": "Maďarsko"}
+
+
+def country_from_dic(dic) -> str | None:
+    return DIC_COUNTRY.get(str(dic or "")[:2].upper())
 
 
 def fetch_all(client: httpx.Client, endpoint: str):
@@ -86,7 +95,8 @@ def run() -> None:
                 {
                     "name": org.get("name"),
                     "pipedrive_org_id": org["id"],
-                    "country": address.get("country") if isinstance(address, dict) else None,
+                    "country": (address.get("country") if isinstance(address, dict) else None)
+                               or country_from_dic(cf(org, "dic")),
                     "city": address.get("locality") if isinstance(address, dict) else None,
                     "domain": cf(org, "domain"),
                     "ico": cf(org, "ico"),
